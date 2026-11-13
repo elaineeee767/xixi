@@ -1,0 +1,2572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sunday Morning · Collage Journal</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            background: #f7efe2;
+            font-family: 'Comic Sans MS', 'Chalkboard SE', 'Patrick Hand', 'Caveat', cursive, sans-serif;
+            padding: 1.5rem 1rem 3rem;
+            display: flex; flex-direction: column; align-items: center;
+            position: relative; min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: ""; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background-image: 
+                repeating-linear-gradient(45deg, rgba(180,140,110,0.03) 0px, rgba(180,140,110,0.03) 2px, transparent 2px, transparent 8px),
+                radial-gradient(circle at 20% 30%, rgba(240,220,200,0.3) 0%, transparent 30%),
+                radial-gradient(circle at 90% 80%, rgba(230,210,180,0.25) 0%, transparent 40%);
+            pointer-events: none; z-index: 0;
+        }
+
+        #customBgLayer {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            z-index: 0; pointer-events: none;
+            background-size: cover; background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .journal {
+            max-width: 1100px; width: 100%;
+            background: #fdf8f0;
+            border-radius: 32px 32px 24px 24px;
+            box-shadow: 0 12px 28px rgba(80,60,40,0.15), 0 4px 10px rgba(80,60,40,0.1), inset 0 0 0 2px #fff5e6, inset 0 0 0 4px #e8d7c0;
+            padding: 2rem 2rem 2.5rem;
+            position: relative; z-index: 2; border: 1px solid #dac09a;
+        }
+
+        .title-section {
+            display: flex; align-items: baseline; justify-content: space-between;
+            border-bottom: 3px dashed #d9b382; padding-bottom: 0.5rem; margin-bottom: 1.8rem; flex-wrap: wrap;
+        }
+
+        .title-section h1 {
+            font-size: 2.4rem; font-weight: 700; color: #5e3e2b; letter-spacing: 1px;
+            text-shadow: 3px 3px 0 #f0dbc0; transform: rotate(-1deg);
+            font-family: 'Patrick Hand', 'Comic Sans MS', cursive;
+        }
+
+        .intro {
+            display: flex; flex-wrap: wrap; gap: 0.6rem 1.2rem;
+            background: #f9efe1; border-radius: 60px; padding: 0.75rem 1.8rem; margin-bottom: 2rem;
+            border: 2px solid #e2c9ae; box-shadow: inset 0 0 0 3px #fffaf2, 3px 3px 0 #dbb48b;
+            align-items: center; justify-content: center; font-size: 1.2rem; color: #4b3621;
+        }
+
+        .intro span {
+            font-weight: 600; background: #fff1e0; padding: 0.1rem 0.8rem;
+            border-radius: 30px; border: 1.5px solid #d9b382;
+        }
+
+        .scene-grid { display: flex; flex-direction: column; gap: 2.2rem; }
+
+        .scene-card {
+            background: #fffcf6; border-radius: 28px 18px 28px 18px;
+            padding: 1.6rem 1.8rem 1.8rem; border: 2px solid #ddc7aa;
+            box-shadow: 6px 6px 0 #c9b294, 0 8px 18px rgba(120,90,60,0.12);
+            transition: transform 0.15s ease; position: relative; transform: rotate(0.4deg);
+        }
+
+        .scene-card:nth-child(even) {
+            transform: rotate(-0.5deg); border-radius: 18px 28px 18px 28px;
+            box-shadow: -6px 6px 0 #c9b294, 0 8px 18px rgba(120,90,60,0.12);
+        }
+
+        .scene-card:nth-child(3n) { transform: rotate(0.8deg); }
+
+        .scene-prompt {
+            font-size: 1.2rem; margin-bottom: 1rem; color: #5b3f2c;
+            background: #f6ede1; padding: 0.4rem 1rem 0.4rem 1.2rem;
+            border-left: 8px solid #b48b5e; border-radius: 0 40px 40px 0;
+            display: inline-block; font-weight: 600; box-shadow: 2px 2px 0 #e2cdb3;
+            letter-spacing: 0.3px; line-height: 1.4;
+        }
+
+        .options { display: flex; flex-wrap: wrap; gap: 0.7rem 0.9rem; margin: 1.2rem 0 1.6rem; }
+
+        .option-btn {
+            background: #f5ebdc; border: 2px solid #b48b5e; border-radius: 40px;
+            padding: 0.5rem 1.3rem; font-size: 1rem; font-weight: 600; color: #4b3621;
+            cursor: pointer; transition: all 0.1s ease; box-shadow: 3px 3px 0 #d0b59b;
+            font-family: inherit; line-height: 1.4; letter-spacing: 0.2px; flex-shrink: 0;
+            touch-action: manipulation;
+        }
+
+        .option-btn:hover { background: #fff5e8; transform: translate(1px, 1px); box-shadow: 2px 2px 0 #d0b59b; }
+
+        .option-btn.selected {
+            background: #f0dab8; border-color: #8b6a47;
+            box-shadow: inset 0 0 0 2px #fff8ec, 2px 2px 0 #8b6a47;
+            color: #2e1f12; font-weight: 700; transform: scale(0.98); position: relative;
+        }
+
+        .option-btn.selected::after { content: "✧"; font-size: 1rem; margin-left: 6px; color: #8b5e3c; display: inline-block; }
+
+        .illustration-area {
+            background: #fef7ea; border-radius: 24px 12px 24px 12px; padding: 1.2rem 0.8rem;
+            min-height: 140px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            border: 2px dashed #d9b382;
+            box-shadow: inset 0 0 0 3px #fffdf8, 0 2px 8px rgba(0,0,0,0.03);
+            background-image: radial-gradient(circle at 10px 10px, #e8d7c0 1.5px, transparent 1.5px);
+            background-size: 28px 28px; position: relative; transition: background 0.2s;
+        }
+
+        .illustration-svg { max-width: 100%; height: auto; display: block; margin: 0 auto; filter: drop-shadow(3px 3px 0 rgba(180,140,100,0.3)); }
+
+        .illustration-caption {
+            margin-top: 10px; font-size: 0.95rem; color: #8a6a4b; font-style: italic;
+            letter-spacing: 0.4px; background: #fff7e8; padding: 0.15rem 1rem;
+            border-radius: 40px; border: 1px solid #dbb48b;
+        }
+
+        .footer-note {
+            margin-top: 3rem; text-align: center; color: #b48b5e; font-size: 1rem;
+            border-top: 2px dotted #d9b382; padding-top: 1.5rem;
+            display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap;
+        }
+
+        .footer-note span {
+            background: #f9efe1; padding: 0.2rem 1.2rem; border-radius: 40px;
+            border: 1.5px solid #d9b382;
+        }
+
+        /* ---------- 筆記本頁面 ---------- */
+        .notebook-page { display: none; width: 100%; margin-top: 2rem; }
+        .notebook-page.active { display: block; }
+
+        .notebook-layout {
+            display: flex; gap: 1.2rem; align-items: flex-start;
+        }
+
+        .notebook-main {
+            flex: 1; min-width: 0;
+        }
+
+        .notebook-container {
+            position: relative; background: #f4ead8; border-radius: 16px; padding: 1.5rem;
+            box-shadow: 0 10px 30px rgba(80,60,40,0.25), inset 0 0 0 2px #e8d7c0;
+            border: 1px solid #dac09a;
+            display: flex; justify-content: center;
+        }
+
+        .open-notebook {
+            background: #fffcf6; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border: 1px solid #d9c8b0; position: relative;
+            width: 100%; max-width: 1100px;
+            aspect-ratio: 297 / 210;
+        }
+
+        .notebook-page-inner {
+            padding: 2rem 1.5rem; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background-image: repeating-linear-gradient(0deg, transparent, transparent 28px, #e8ddd0 28px, #e8ddd0 29px);
+            background-size: 100% 29px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .sticker-area {
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            pointer-events: none;
+        }
+
+        .sticker {
+            position: absolute; pointer-events: auto; cursor: move; user-select: none;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.2));
+            max-width: 220px;
+            touch-action: none;
+        }
+
+        .sticker svg, .sticker img { display: block; max-width: 100%; height: auto; border-radius: 4px; }
+
+        .sticker .resize-handle {
+            position: absolute; right: -8px; bottom: -8px; width: 20px; height: 20px;
+            background: #b48b5e; border: 2px solid #fff; border-radius: 50%;
+            cursor: se-resize; pointer-events: auto;
+            touch-action: none;
+        }
+
+        .sticker .rotate-handle {
+            position: absolute; left: -24px; top: -24px; width: 22px; height: 22px;
+            background: #2980b9; border: 2px solid #fff; border-radius: 50%;
+            cursor: grab; pointer-events: auto; font-size: 12px;
+            display: flex; align-items: center; justify-content: center;
+            color: #fff; line-height: 1;
+            touch-action: none;
+        }
+
+        .sticker .delete-btn {
+            position: absolute; top: -10px; right: -10px; width: 24px; height: 24px;
+            background: #c0392b; color: white; border: 2px solid #fff; border-radius: 50%;
+            font-size: 14px; font-weight: bold; cursor: pointer; pointer-events: auto;
+            display: none; align-items: center; justify-content: center;
+            line-height: 1; z-index: 10;
+            touch-action: manipulation;
+        }
+
+        .sticker .delete-btn:hover { background: #a93226; }
+        .sticker.selected .delete-btn { display: flex; }
+
+        .editable-text {
+            position: absolute; pointer-events: auto; cursor: move; user-select: none;
+            background: rgba(255,250,240,0.92); padding: 0.3rem 0.8rem;
+            border: 1px dashed #b48b5e; border-radius: 8px;
+            font-size: 1rem; color: #4b3621; max-width: 220px; word-break: break-word;
+            font-family: 'Patrick Hand', 'Comic Sans MS', cursive;
+            min-width: 60px;
+            touch-action: none;
+        }
+
+        .editable-text[contenteditable="true"] {
+            outline: 2px solid #b48b5e; background: #fff; cursor: text;
+            z-index: 200;
+        }
+
+        .editable-text .delete-btn {
+            position: absolute; top: -10px; right: -10px; width: 24px; height: 24px;
+            background: #c0392b; color: white; border: 2px solid #fff; border-radius: 50%;
+            font-size: 14px; font-weight: bold; cursor: pointer; pointer-events: auto;
+            display: none; align-items: center; justify-content: center;
+            line-height: 1; z-index: 10;
+            touch-action: manipulation;
+        }
+
+        .editable-text.selected .delete-btn { display: flex; }
+
+        /* 側欄 */
+        .sidebar {
+            width: 280px; flex-shrink: 0;
+            background: #f9efe1; border: 2px solid #dbb48b; border-radius: 16px;
+            padding: 1rem; max-height: 85vh; overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .sidebar h3 {
+            font-size: 1rem; color: #5e3e2b; margin-bottom: 0.8rem;
+            border-bottom: 2px dashed #d9b382; padding-bottom: 0.4rem;
+        }
+
+        .sidebar-section {
+            margin-bottom: 1rem;
+        }
+
+        .sidebar-section h4 {
+            font-size: 0.85rem; color: #8a6a4b; margin-bottom: 0.4rem;
+            font-weight: 700;
+        }
+
+        .sidebar-btn {
+            background: #fff1e0; border: 1.5px solid #b48b5e; border-radius: 20px;
+            padding: 0.5rem 1rem; font-size: 0.85rem; font-weight: 600;
+            color: #4b3621; cursor: pointer; font-family: inherit;
+            box-shadow: 2px 2px 0 #d0b59b; transition: all 0.1s;
+            margin: 0.2rem 0.3rem 0.2rem 0;
+            min-height: 40px;
+            touch-action: manipulation;
+        }
+
+        .sidebar-btn:hover { background: #fff5e8; transform: translate(1px, 1px); box-shadow: 1px 1px 0 #d0b59b; }
+        .sidebar-btn.active { background: #b48b5e; color: #fff; }
+
+        .sidebar-info {
+            font-size: 0.8rem; color: #8a6a4b; padding: 0.2rem 0;
+        }
+
+        .sidebar-empty {
+            font-size: 0.8rem; color: #b48b5e; font-style: italic;
+        }
+
+        .layer-list {
+            margin-top: 0.3rem;
+        }
+
+        .layer-item {
+            display: flex; align-items: center; gap: 0.4rem;
+            background: #fffcf6; border: 1px solid #d9c8b0; border-radius: 8px;
+            padding: 0.5rem; margin-bottom: 0.3rem; font-size: 0.8rem;
+            cursor: grab; transition: all 0.1s;
+            user-select: none;
+            min-height: 44px;
+            touch-action: none;
+        }
+
+        .layer-item:hover { background: #fff5e8; border-color: #b48b5e; }
+        .layer-item.active { background: #f0dab8; border-color: #8b6a47; font-weight: 600; }
+        .layer-item.dragging { opacity: 0.4; }
+        .layer-item.drag-over { border-color: #8b6a47; border-style: dashed; }
+
+        .layer-item .drag-handle {
+            font-size: 1rem; color: #b48b5e; cursor: grab; line-height: 1;
+        }
+
+        .layer-item .layer-thumb {
+            width: 32px; height: 32px; border-radius: 4px; overflow: hidden;
+            display: flex; align-items: center; justify-content: center;
+            background: #f4ead8; flex-shrink: 0;
+        }
+
+        .layer-item .layer-thumb img,
+        .layer-item .layer-thumb svg {
+            max-width: 100%; max-height: 100%; object-fit: contain;
+        }
+
+        .layer-item .layer-name {
+            flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+            color: #4b3621;
+        }
+
+        .layer-item .layer-fixed-icon {
+            font-size: 0.7rem; color: #8a6a4b;
+        }
+
+        .layer-item .layer-z {
+            font-size: 0.7rem; color: #b48b5e; min-width: 24px; text-align: right;
+        }
+
+        .toolbar {
+            display: flex; gap: 0.6rem; margin: 1rem 0; flex-wrap: wrap; justify-content: center;
+            align-items: center;
+        }
+
+        .toolbar button {
+            background: #fff1e0; border: 2px solid #b48b5e; border-radius: 40px;
+            padding: 0.55rem 1.1rem; font-size: 0.9rem; font-weight: 600; color: #4b3621;
+            cursor: pointer; font-family: inherit; box-shadow: 3px 3px 0 #d0b59b;
+            transition: all 0.1s;
+            min-height: 44px;
+            touch-action: manipulation;
+        }
+
+        .toolbar button:hover { background: #fff5e8; transform: translate(1px, 1px); box-shadow: 2px 2px 0 #d0b59b; }
+
+        .toolbar button.primary { background: #dbb48b; color: #2e1f12; border-color: #8b6a47; }
+        .toolbar button.primary:hover { background: #e8c9a8; }
+
+        .toolbar button.small { font-size: 0.85rem; padding: 0.4rem 0.8rem; }
+
+        .toolbar button.active-tool {
+            background: #b48b5e; color: #fff; border-color: #8b6a47;
+            box-shadow: inset 0 0 0 2px #fff8ec, 2px 2px 0 #8b6a47;
+        }
+
+        .toolbar button:disabled {
+            opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: 3px 3px 0 #d0b59b;
+        }
+
+        .hidden { display: none !important; }
+
+        .brush-size-control {
+            display: flex; align-items: center; gap: 0.4rem;
+            background: #f9efe1; border: 2px solid #dbb48b; border-radius: 40px;
+            padding: 0.25rem 0.8rem; margin: 0 0.3rem;
+            min-height: 44px;
+        }
+
+        .brush-size-control label { font-size: 0.8rem; color: #5e3e2b; font-weight: 600; }
+        .brush-size-control input[type="range"] { width: 80px; cursor: pointer; accent-color: #b48b5e; }
+        .brush-size-control .size-value { font-size: 0.75rem; color: #5e3e2b; min-width: 26px; text-align: center; font-weight: 600; }
+
+        .image-panel {
+            background: #f9efe1; border: 2px solid #dbb48b; border-radius: 16px;
+            padding: 0.8rem; margin: 0.6rem 0; display: flex; flex-wrap: wrap;
+            gap: 0.6rem; align-items: center; justify-content: center;
+            min-height: 80px;
+        }
+
+        .image-item {
+            width: 56px; height: 56px; border: 2px dashed #d0b59b; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; background: #fffcf6; transition: all 0.1s;
+            overflow: hidden; flex-shrink: 0; position: relative;
+            touch-action: manipulation;
+        }
+
+        .image-item:hover { border-color: #b48b5e; background: #fff5e8; transform: scale(1.05); }
+        .image-item svg, .image-item img { max-width: 46px; max-height: 46px; }
+
+        .image-item .remove-img {
+            position: absolute; top: -6px; right: -6px; width: 22px; height: 22px;
+            background: #c0392b; color: white; border: 1.5px solid #fff; border-radius: 50%;
+            font-size: 12px; font-weight: bold; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            line-height: 1;
+            touch-action: manipulation;
+        }
+
+        .image-item .remove-img:hover { background: #a93226; }
+
+        .image-empty {
+            color: #b48b5e; font-style: italic; font-size: 0.85rem; padding: 0.4rem;
+        }
+
+        .upload-btn-wrapper {
+            position: relative; overflow: hidden; display: inline-block;
+        }
+
+        .upload-btn-wrapper input[type=file] {
+            position: absolute; left: 0; top: 0; opacity: 0; width: 100%; height: 100%; cursor: pointer;
+        }
+
+        .upload-btn {
+            background: #fff1e0; border: 2px dashed #b48b5e; border-radius: 12px;
+            padding: 0.6rem 1rem; font-size: 0.85rem; font-weight: 600; color: #4b3621;
+            cursor: pointer; font-family: inherit;
+            display: flex; align-items: center; justify-content: center;
+            min-width: 80px; min-height: 56px; text-align: center;
+            touch-action: manipulation;
+        }
+
+        .upload-btn:hover { background: #fff5e8; border-color: #8b6a47; }
+
+        .scale-controls {
+            display: flex; gap: 0.5rem; align-items: center; justify-content: center;
+            margin-top: 0.4rem;
+        }
+
+        .scale-controls button {
+            background: #f0dab8; border: 1px solid #b48b5e; border-radius: 8px;
+            width: 36px; height: 36px; cursor: pointer; font-size: 18px; font-weight: bold;
+            color: #5e3e2b; display: flex; align-items: center; justify-content: center;
+            padding: 0; line-height: 1;
+            touch-action: manipulation;
+        }
+
+        .scale-controls button:hover { background: #e8c9a8; }
+
+        .scale-controls span { font-size: 0.85rem; color: #5e3e2b; min-width: 44px; text-align: center; }
+
+        #drawCanvas {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 500;
+            touch-action: none;
+        }
+
+        #drawCanvas.active {
+            pointer-events: auto;
+            cursor: crosshair;
+        }
+
+        .sticker.selected, .editable-text.selected {
+            outline: 2px dashed #8b5e3c;
+            outline-offset: 3px;
+        }
+
+        .drawing-save-bar {
+            display: flex; gap: 0.8rem; align-items: center; justify-content: center;
+            margin: 0.6rem 0;
+            flex-wrap: wrap;
+        }
+
+        .drawing-save-bar button {
+            background: #27ae60; color: white; border: 2px solid #1e8449; border-radius: 40px;
+            padding: 0.55rem 1.2rem; font-size: 0.9rem; font-weight: 600;
+            cursor: pointer; font-family: inherit; box-shadow: 3px 3px 0 #1e8449;
+            min-height: 44px;
+            touch-action: manipulation;
+        }
+
+        .drawing-save-bar button:hover { background: #219a52; }
+
+        .drawing-save-bar button.cancel {
+            background: #c0392b; border-color: #a93226; box-shadow: 3px 3px 0 #a93226;
+        }
+
+        .drawing-save-bar button.cancel:hover { background: #a93226; }
+
+        .editor-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center;
+            z-index: 1000; padding: 1rem;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .editor-panel {
+            background: #fdf8f0; border-radius: 24px; padding: 1.5rem;
+            max-width: 800px; width: 100%; max-height: 90vh; overflow-y: auto;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3); border: 3px solid #dbb48b;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .editor-panel h2 { color: #5e3e2b; margin-bottom: 1rem; font-size: 1.4rem; }
+
+        .editor-panel .section {
+            margin-bottom: 1.2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px dashed #d9b382;
+        }
+
+        .editor-panel .section h3 {
+            color: #5e3e2b; margin-bottom: 0.8rem; font-size: 1rem;
+        }
+
+        .editor-panel .option-row {
+            display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.8rem;
+            padding: 0.6rem; background: #f9efe1; border-radius: 12px; border: 1px solid #e2c9ae;
+            flex-wrap: wrap;
+        }
+
+        .editor-panel .option-row label { flex: 1; font-weight: 600; color: #4b3621; font-size: 0.9rem; min-width: 120px; }
+
+        .editor-panel .option-row input[type="file"] { font-size: 0.8rem; width: 120px; }
+
+        .editor-panel .option-row .preview {
+            width: 50px; height: 50px; border: 1px dashed #b48b5e; border-radius: 8px;
+            display: flex; align-items: center; justify-content: center; overflow: hidden;
+            background: #fff; flex-shrink: 0;
+        }
+
+        .editor-panel .option-row .preview svg, .editor-panel .option-row .preview img { max-width: 100%; max-height: 100%; }
+
+        .editor-panel .close-btn {
+            background: #b48b5e; color: white; border: none; border-radius: 40px;
+            padding: 0.7rem 2rem; font-size: 1rem; cursor: pointer; font-family: inherit;
+            margin-top: 1rem; box-shadow: 3px 3px 0 #8b6a47;
+            min-height: 44px;
+            touch-action: manipulation;
+        }
+
+        .editor-panel .close-btn:hover { background: #a07a50; }
+
+        .editor-panel .save-btn {
+            background: #27ae60; color: white; border: none; border-radius: 40px;
+            padding: 0.7rem 2rem; font-size: 1rem; cursor: pointer; font-family: inherit;
+            margin-top: 1rem; margin-right: 0.8rem; box-shadow: 3px 3px 0 #1e8449;
+            min-height: 44px;
+            touch-action: manipulation;
+        }
+
+        .editor-panel .save-btn:hover { background: #219a52; }
+
+        .editor-panel .bg-upload-area {
+            display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
+        }
+
+        .editor-panel .bg-preview {
+            width: 80px; height: 50px; border: 1px dashed #b48b5e; border-radius: 8px;
+            display: flex; align-items: center; justify-content: center; overflow: hidden;
+            background: #fff; flex-shrink: 0;
+        }
+
+        .editor-panel .bg-preview img { max-width: 100%; max-height: 100%; object-fit: cover; }
+
+        .password-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center;
+            z-index: 1100;
+            padding: 1rem;
+        }
+
+        .password-panel {
+            background: #fdf8f0; border-radius: 24px; padding: 1.8rem;
+            max-width: 360px; width: 100%;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3); border: 3px solid #dbb48b;
+            text-align: center;
+        }
+
+        .password-panel h2 { color: #5e3e2b; margin-bottom: 1rem; font-size: 1.3rem; }
+
+        .password-panel input {
+            width: 100%; padding: 0.8rem 1rem; font-size: 1.2rem; text-align: center;
+            border: 2px solid #b48b5e; border-radius: 40px; font-family: inherit;
+            color: #4b3621; background: #fff; margin-bottom: 1rem;
+            letter-spacing: 0.5rem;
+        }
+
+        .password-panel input:focus { outline: none; border-color: #8b6a47; }
+
+        .password-panel .error { color: #c0392b; font-size: 0.9rem; margin-bottom: 0.5rem; min-height: 1.2rem; }
+
+        .password-panel button {
+            background: #b48b5e; color: white; border: none; border-radius: 40px;
+            padding: 0.7rem 1.6rem; font-size: 1rem; cursor: pointer; font-family: inherit;
+            box-shadow: 3px 3px 0 #8b6a47; margin: 0.3rem;
+            min-height: 44px;
+            touch-action: manipulation;
+        }
+
+        .password-panel button:hover { background: #a07a50; }
+
+        .export-controls {
+            display: flex; gap: 0.6rem; align-items: center; justify-content: center;
+            margin: 0.8rem 0; flex-wrap: wrap;
+        }
+
+        .export-controls button {
+            background: #2980b9; color: white; border: 2px solid #1f618d; border-radius: 40px;
+            padding: 0.55rem 1.1rem; font-size: 0.9rem; font-weight: 600;
+            cursor: pointer; font-family: inherit; box-shadow: 3px 3px 0 #1a5276;
+            transition: all 0.1s;
+            min-height: 44px;
+            touch-action: manipulation;
+        }
+
+        .export-controls button:hover { background: #3498db; transform: translate(1px, 1px); box-shadow: 2px 2px 0 #1a5276; }
+
+        .mode-indicator {
+            display: inline-block; padding: 0.25rem 0.8rem; border-radius: 20px;
+            font-size: 0.8rem; font-weight: 700; margin-left: 0.5rem;
+        }
+
+        .mode-indicator.editing { background: #f39c12; color: #fff; }
+        .mode-indicator.viewing { background: #27ae60; color: #fff; }
+
+        /* ========== 平板與手機適配 ========== */
+        @media (max-width: 900px) {
+            .notebook-layout { flex-direction: column; }
+            .sidebar {
+                width: 100%;
+                max-height: 45vh;
+                margin-top: 0.8rem;
+            }
+            .journal { padding: 1.2rem; }
+            .title-section h1 { font-size: 1.9rem; }
+            .scene-card { padding: 1.2rem; }
+        }
+
+        @media (max-width: 700px) {
+            body { padding: 0.8rem 0.5rem 2rem; }
+            .journal { padding: 1rem; border-radius: 20px; }
+            .title-section h1 { font-size: 1.6rem; }
+            .intro { padding: 0.5rem 1rem; font-size: 0.95rem; gap: 0.4rem; }
+            .intro span { padding: 0.1rem 0.6rem; }
+            .scene-prompt { font-size: 1rem; padding: 0.3rem 0.8rem 0.3rem 1rem; }
+            .option-btn { font-size: 0.85rem; padding: 0.55rem 1rem; min-height: 40px; }
+            .illustration-area { min-height: 110px; padding: 0.8rem 0.5rem; }
+            .illustration-caption { font-size: 0.8rem; }
+            .toolbar { gap: 0.5rem; margin: 0.8rem 0; }
+            .toolbar button { padding: 0.55rem 0.9rem; font-size: 0.85rem; }
+            .brush-size-control { padding: 0.2rem 0.6rem; }
+            .brush-size-control input[type="range"] { width: 70px; }
+            .notebook-container { padding: 0.8rem; }
+            .notebook-page-inner { padding: 1rem; }
+            .sidebar { max-height: 40vh; padding: 0.8rem; }
+            .sidebar-btn { font-size: 0.8rem; padding: 0.4rem 0.8rem; }
+            .image-panel { padding: 0.6rem; gap: 0.5rem; }
+            .image-item { width: 50px; height: 50px; }
+            .image-item svg, .image-item img { max-width: 40px; max-height: 40px; }
+            .upload-btn { min-width: 70px; min-height: 50px; font-size: 0.8rem; }
+            .sticker .resize-handle { width: 24px; height: 24px; right: -10px; bottom: -10px; }
+            .sticker .rotate-handle { width: 26px; height: 26px; left: -28px; top: -28px; font-size: 14px; }
+            .sticker .delete-btn { width: 28px; height: 28px; font-size: 16px; top: -12px; right: -12px; }
+            .editable-text .delete-btn { width: 28px; height: 28px; font-size: 16px; top: -12px; right: -12px; }
+            .scale-controls button { width: 40px; height: 40px; font-size: 20px; }
+            .editor-panel { padding: 1rem; }
+            .editor-panel .option-row { flex-direction: column; align-items: flex-start; }
+            .editor-panel .option-row input[type="file"] { width: 100%; }
+            .password-panel { padding: 1.5rem; }
+        }
+
+        @media (max-width: 480px) {
+            .title-section h1 { font-size: 1.35rem; }
+            .toolbar button { padding: 0.5rem 0.7rem; font-size: 0.8rem; }
+            .drawing-save-bar button { padding: 0.5rem 0.9rem; font-size: 0.85rem; }
+            .sidebar { max-height: 35vh; }
+        }
+    </style>
+</head>
+<body>
+    <div id="customBgLayer"></div>
+    <div class="journal">
+        <div class="title-section">
+            <h1>☕ Sunday Morning · Collage Journal</h1>
+        </div>
+
+        <div class="intro">
+            <span>☀️ It's summer.</span>
+            <span>📅 Sunday Morning.</span>
+        </div>
+
+        <div class="scene-grid" id="sceneGrid"></div>
+
+        <div class="toolbar" id="finishToolbar" style="display: none;">
+            <button class="primary" id="goToNotebookBtn">📖 Open My Notebook</button>
+            <button id="openEditorBtn">🔒 Admin Panel</button>
+        </div>
+
+        <div class="notebook-page" id="notebookPage">
+            <div class="toolbar">
+                <button id="addTextBtn">➕ Add Text</button>
+                <button id="drawModeBtn">🖌️ Draw</button>
+                <button id="eraserModeBtn">🧹 Eraser</button>
+                <div class="brush-size-control" id="brushSizeControl" style="display:none;">
+                    <label>Size:</label>
+                    <input type="range" id="brushSizeRange" min="1" max="30" value="4" step="1">
+                    <span class="size-value" id="brushSizeValue">4</span>
+                </div>
+                <button id="clearDrawBtn" style="display:none;">🗑️ Clear</button>
+                <button id="undoBtn" disabled>↩️ Undo</button>
+                <button id="redoBtn" disabled>↪️ Redo</button>
+                <button id="saveBtn" class="primary">💾 Save</button>
+                <button id="editBtn" style="display:none;">✏️ Edit</button>
+                <span id="modeIndicator" class="mode-indicator editing">Editing</span>
+                <button id="clearNotebookBtn">🗑️ Clear All</button>
+                <button id="backToSelectionBtn">← Back</button>
+            </div>
+
+            <div class="export-controls">
+                <span style="font-size:0.85rem;color:#5e3e2b;">Export A4 HD:</span>
+                <button id="exportPngBtn">📷 PNG</button>
+                <button id="exportJpgBtn">📷 JPG</button>
+            </div>
+
+            <div class="drawing-save-bar" id="drawingSaveBar" style="display:none;">
+                <button id="saveDrawingBtn">✅ Save Drawing as Sticker</button>
+                <button id="cancelDrawingBtn" class="cancel">❌ Cancel Drawing</button>
+            </div>
+
+            <div class="image-panel" id="imagePanel">
+                <span class="image-empty">Upload your own images below to use in the notebook.</span>
+            </div>
+
+            <div class="notebook-layout">
+                <div class="notebook-main">
+                    <div class="scale-controls" id="scaleControls" style="display:none;">
+                        <button id="scaleDownBtn">−</button>
+                        <span id="scaleValue">100%</span>
+                        <button id="scaleUpBtn">+</button>
+                    </div>
+                    <div class="notebook-container">
+                        <div class="open-notebook">
+                            <div class="notebook-page-inner" id="notebookPageInner">
+                                <div class="sticker-area" id="stickerArea"></div>
+                                <canvas id="drawCanvas"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="sidebar" id="sidebar">
+                    <h3>🧷 Element Controls</h3>
+                    <div id="sidebarContent">
+                        <p class="sidebar-empty">Select an element to see controls.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-note">
+            <span>✎ Each choice generates a unique vintage illustration</span>
+            <span>✂️ Collage your Sunday morning</span>
+        </div>
+    </div>
+
+    <!-- 管理員密碼浮層 -->
+    <div class="password-overlay hidden" id="passwordOverlay">
+        <div class="password-panel">
+            <h2>🔒 Admin Access</h2>
+            <input type="password" id="passwordInput" maxlength="4" placeholder="Enter 4-digit password" inputmode="numeric" pattern="[0-9]*">
+            <div class="error" id="passwordError"></div>
+            <button id="passwordSubmitBtn">Enter</button>
+            <button id="passwordCancelBtn">Cancel</button>
+        </div>
+    </div>
+
+    <!-- 管理員總面板 -->
+    <div class="editor-overlay hidden" id="adminPanelOverlay">
+        <div class="editor-panel">
+            <h2>🛠️ Admin Panel</h2>
+
+            <div class="section">
+                <h3>🖼️ Page Background</h3>
+                <div class="bg-upload-area">
+                    <div class="bg-preview" id="bgPreview"></div>
+                    <input type="file" id="bgImageInput" accept="image/*">
+                    <button class="close-btn" id="removeBgBtn" style="margin-top:0; padding:0.4rem 1rem; font-size:0.85rem;">Remove Background</button>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>✏️ Edit Option Illustrations</h3>
+                <div id="editorOptionsList"></div>
+            </div>
+
+            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: flex-end;">
+                <button class="save-btn" id="saveAdminBtn">💾 Save Changes</button>
+                <button class="close-btn" id="closeAdminPanelBtn">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ================================================================
+        // 复古手绘风 SVG 生成器（透明底、无文字、无多余装饰点）
+        // ================================================================
+        function makeSvg(content) {
+            return `<svg class="illustration-svg" viewBox="0 0 300 130" width="100%" height="auto" xmlns="http://www.w3.org/2000/svg" style="background:transparent">${content}</svg>`;
+        }
+
+        const C = {
+            ink: '#4A3728',
+            inkLight: '#6B5544',
+            cream: '#FDF6E3',
+            yellow: '#F5D76E',
+            orange: '#F5A623',
+            red: '#D9534F',
+            brown: '#8B5E3C',
+            brownLight: '#C49A6C',
+            green: '#7FB069',
+            blue: '#7BA7BC',
+            blueLight: '#B8D8E8',
+            pink: '#F2B5C4',
+            white: '#FFFFFF',
+            grey: '#C9C0B5',
+            greyLight: '#E8E0D5'
+        };
+
+        // ================================================================
+        // 場景數據 + 完整默認插圖
+        // ================================================================
+        const scenes = [
+            {
+                id: 'scene1',
+                prompt: 'At wake-up ( )',
+                options: ['the clock strikes seven',"it's nine o'clock",'no telling what time it is',"it's noon","it's right back to sleep for a while"],
+                renderIllustration: function(selected) {
+                    let content = '';
+                    if (selected === 'the clock strikes seven') {
+                        content = `
+                            <ellipse cx="150" cy="118" rx="55" ry="8" fill="${C.inkLight}" opacity="0.15"/>
+                            <circle cx="150" cy="62" r="38" fill="${C.cream}" stroke="${C.ink}" stroke-width="4"/>
+                            <circle cx="150" cy="62" r="32" fill="none" stroke="${C.inkLight}" stroke-width="1.5" stroke-dasharray="2 4"/>
+                            <path d="M112 42 Q150 10 188 42" stroke="${C.ink}" stroke-width="4" fill="none" stroke-linecap="round"/>
+                            <circle cx="150" cy="22" r="7" fill="${C.yellow}" stroke="${C.ink}" stroke-width="3"/>
+                            <line x1="150" y1="62" x2="150" y2="38" stroke="${C.ink}" stroke-width="3.5" stroke-linecap="round"/>
+                            <line x1="150" y1="62" x2="172" y2="58" stroke="${C.red}" stroke-width="3" stroke-linecap="round"/>
+                            <circle cx="150" cy="62" r="4" fill="${C.ink}"/>
+                            <line x1="132" y1="102" x2="125" y2="115" stroke="${C.ink}" stroke-width="4" stroke-linecap="round"/>
+                            <line x1="168" y1="102" x2="175" y2="115" stroke="${C.ink}" stroke-width="4" stroke-linecap="round"/>
+                            <path d="M220 30 L222 36 L228 36 L223 40 L225 46 L220 42 L215 46 L217 40 L212 36 L218 36 Z" fill="${C.yellow}" stroke="${C.ink}" stroke-width="1.5"/>
+                        `;
+                    } else if (selected === "it's nine o'clock") {
+                        content = `
+                            <ellipse cx="150" cy="118" rx="55" ry="8" fill="${C.inkLight}" opacity="0.15"/>
+                            <circle cx="150" cy="62" r="38" fill="${C.cream}" stroke="${C.ink}" stroke-width="4"/>
+                            <circle cx="150" cy="62" r="32" fill="none" stroke="${C.inkLight}" stroke-width="1.5" stroke-dasharray="2 4"/>
+                            <path d="M112 42 Q150 10 188 42" stroke="${C.ink}" stroke-width="4" fill="none" stroke-linecap="round"/>
+                            <circle cx="150" cy="22" r="7" fill="${C.blueLight}" stroke="${C.ink}" stroke-width="3"/>
+                            <line x1="150" y1="62" x2="150" y2="38" stroke="${C.ink}" stroke-width="3.5" stroke-linecap="round"/>
+                            <line x1="150" y1="62" x2="128" y2="62" stroke="${C.ink}" stroke-width="3" stroke-linecap="round"/>
+                            <circle cx="150" cy="62" r="4" fill="${C.ink}"/>
+                            <line x1="132" y1="102" x2="125" y2="115" stroke="${C.ink}" stroke-width="4" stroke-linecap="round"/>
+                            <line x1="168" y1="102" x2="175" y2="115" stroke="${C.ink}" stroke-width="4" stroke-linecap="round"/>
+                            <path d="M220 30 L222 36 L228 36 L223 40 L225 46 L220 42 L215 46 L217 40 L212 36 L218 36 Z" fill="${C.yellow}" stroke="${C.ink}" stroke-width="1.5"/>
+                        `;
+                    } else if (selected === 'no telling what time it is') {
+                        content = `
+                            <ellipse cx="150" cy="118" rx="55" ry="8" fill="${C.inkLight}" opacity="0.15"/>
+                            <g transform="rotate(-8 150 62)">
+                                <circle cx="150" cy="62" r="38" fill="${C.cream}" stroke="${C.ink}" stroke-width="4"/>
+                                <circle cx="150" cy="62" r="32" fill="none" stroke="${C.inkLight}" stroke-width="1.5" stroke-dasharray="2 4"/>
+                                <line x1="150" y1="62" x2="170" y2="35" stroke="${C.ink}" stroke-width="3.5" stroke-linecap="round"/>
+                                <line x1="150" y1="62" x2="120" y2="78" stroke="${C.red}" stroke-width="3" stroke-linecap="round"/>
+                                <line x1="150" y1="62" x2="178" y2="82" stroke="${C.inkLight}" stroke-width="2" stroke-linecap="round"/>
+                                <circle cx="150" cy="62" r="4" fill="${C.ink}"/>
+                            </g>
+                            <path d="M220 40 Q220 25 235 25 Q250 25 250 38 Q250 48 238 50 L238 58" stroke="${C.ink}" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+                            <circle cx="238" cy="68" r="3.5" fill="${C.ink}"/>
+                        `;
+                    } else if (selected === "it's noon") {
+                        content = `
+                            <ellipse cx="150" cy="118" rx="55" ry="8" fill="${C.inkLight}" opacity="0.15"/>
+                            <circle cx="150" cy="62" r="38" fill="${C.cream}" stroke="${C.ink}" stroke-width="4"/>
+                            <circle cx="150" cy="62" r="32" fill="none" stroke="${C.yellow}" stroke-width="2" stroke-dasharray="2 4"/>
+                            <line x1="150" y1="62" x2="150" y2="36" stroke="${C.ink}" stroke-width="3.5" stroke-linecap="round"/>
+                            <line x1="150" y1="62" x2="150" y2="88" stroke="${C.ink}" stroke-width="2.5" stroke-linecap="round"/>
+                            <circle cx="150" cy="62" r="4" fill="${C.ink}"/>
+                            <path d="M150 10 L150 20 M150 104 L150 114 M100 62 L90 62 M210 62 L200 62 M114 26 L108 18 M186 98 L192 106 M114 98 L108 106 M186 26 L192 18" stroke="${C.orange}" stroke-width="3.5" stroke-linecap="round"/>
+                            <circle cx="150" cy="62" r="10" fill="${C.yellow}" opacity="0.4"/>
+                        `;
+                    } else {
+                        content = `
+                            <ellipse cx="150" cy="118" rx="70" ry="8" fill="${C.inkLight}" opacity="0.15"/>
+                            <rect x="80" y="70" width="140" height="40" rx="6" fill="${C.cream}" stroke="${C.ink}" stroke-width="3.5"/>
+                            <rect x="75" y="60" width="150" height="15" rx="7" fill="${C.pink}" stroke="${C.ink}" stroke-width="3.5"/>
+                            <ellipse cx="105" cy="65" rx="20" ry="12" fill="${C.white}" stroke="${C.ink}" stroke-width="3"/>
+                            <circle cx="150" cy="55" r="12" fill="${C.yellow}" stroke="${C.ink}" stroke-width="3"/>
+                            <path d="M144 55 Q148 53 152 55" stroke="${C.ink}" stroke-width="2" fill="none" stroke-linecap="round"/>
+                            <path d="M150 60 Q153 62 156 60" stroke="${C.ink}" stroke-width="2" fill="none" stroke-linecap="round"/>
+                            <text x="180" y="42" font-family="Comic Sans MS, cursive" font-size="16" fill="${C.inkLight}" font-weight="bold" transform="rotate(-10 180 42)">z</text>
+                            <text x="195" y="32" font-family="Comic Sans MS, cursive" font-size="20" fill="${C.inkLight}" font-weight="bold" transform="rotate(-10 195 32)">z</text>
+                            <text x="210" y="20" font-family="Comic Sans MS, cursive" font-size="24" fill="${C.inkLight}" font-weight="bold" transform="rotate(-10 210 20)">z</text>
+                            <line x1="90" y1="110" x2="90" y2="120" stroke="${C.ink}" stroke-width="4" stroke-linecap="round"/>
+                            <line x1="210" y1="110" x2="210" y2="120" stroke="${C.ink}" stroke-width="4" stroke-linecap="round"/>
+                        `;
+                    }
+                    return makeSvg(content);
+                }
+            },
+            {
+                id: 'scene2',
+                prompt: 'The weather today is ( )',
+                options: ['clear and mild','bright sunshine','overcast','drizzles, sometimes heavy','a storm is on the way'],
+                renderIllustration: function(selected) {
+                    let content = '';
+                    if (selected === 'clear and mild') {
+                        content = `
+                            <circle cx="80" cy="50" r="28" fill="${C.yellow}" stroke="${C.ink}" stroke-width="3.5"/>
+                            <circle cx="80" cy="50" r="20" fill="${C.yellow}" opacity="0.5"/>
+                            <path d="M80 8 L80 18 M80 82 L80 92 M38 50 L48 50 M112 50 L122 50 M50 20 L57 27 M103 73 L110 80 M50 80 L57 73 M103 27 L110 20" stroke="${C.orange}" stroke-width="3" stroke-linecap="round"/>
+                            <path d="M170 65 Q170 48 190 48 Q200 35 220 42 Q240 35 250 50 Q265 50 265 65 Q265 78 248 78 L182 78 Q168 78 170 65" fill="${C.white}" stroke="${C.ink}" stroke-width="3"/>
+                            <path d="M200 25 Q208 18 216 25 Q224 18 232 25" stroke="${C.ink}" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                            <circle cx="130" cy="100" r="4" fill="${C.pink}" stroke="${C.ink}" stroke-width="1.5"/>
+                            <line x1="130" y1="104" x2="130" y2="112" stroke="${C.green}" stroke-width="2"/>
+                        `;
+                    } else if (selected === 'bright sunshine') {
+                        content = `
+                            <circle cx="150" cy="58" r="38" fill="${C.yellow}" stroke="${C.ink}" stroke-width="4"/>
+                            <circle cx="150" cy="58" r="26" fill="${C.yellow}" opacity="0.5"/>
+                            <path d="M150 6 L150 18 M150 98 L150 110 M98 58 L86 58 M214 58 L202 58 M114 22 L105 13 M186 94 L195 103 M114 94 L105 103 M186 22 L195 13" stroke="${C.orange}" stroke-width="4" stroke-linecap="round"/>
+                            <rect x="132" y="52" width="16" height="10" rx="3" fill="${C.ink}"/>
+                            <rect x="152" y="52" width="16" height="10" rx="3" fill="${C.ink}"/>
+                            <line x1="148" y1="56" x2="152" y2="56" stroke="${C.ink}" stroke-width="3"/>
+                            <path d="M140 72 Q150 80 160 72" stroke="${C.ink}" stroke-width="3" fill="none" stroke-linecap="round"/>
+                        `;
+                    } else if (selected === 'overcast') {
+                        content = `
+                            <path d="M60 60 Q60 38 90 38 Q100 20 130 28 Q160 15 190 32 Q220 22 240 45 Q265 45 265 65 Q265 82 240 82 L85 82 Q60 82 60 60" fill="${C.grey}" stroke="${C.ink}" stroke-width="3.5"/>
+                            <path d="M90 82 Q90 65 115 65 Q130 52 155 60 Q180 52 200 65 Q225 60 230 78 Q230 92 210 92 L110 92 Q90 92 90 82" fill="${C.greyLight}" stroke="${C.ink}" stroke-width="2.5"/>
+                            <path d="M200 30 Q200 20 215 20 Q222 12 235 18 Q245 15 248 25 Q258 25 258 35 Q258 45 245 45 L210 45 Q198 45 200 30" fill="${C.greyLight}" stroke="${C.ink}" stroke-width="2.5"/>
+                        `;
+                    } else if (selected === 'drizzles, sometimes heavy') {
+                        content = `
+                            <path d="M60 55 Q60 35 90 35 Q100 18 130 25 Q160 12 190 28 Q220 18 240 40 Q265 40 265 58 Q265 75 240 75 L85 75 Q60 75 60 55" fill="${C.grey}" stroke="${C.ink}" stroke-width="3.5"/>
+                            <ellipse cx="100" cy="92" rx="3" ry="6" fill="${C.blue}" stroke="${C.ink}" stroke-width="1.5" transform="rotate(15 100 92)"/>
+                            <ellipse cx="130" cy="98" rx="2.5" ry="5" fill="${C.blue}" stroke="${C.ink}" stroke-width="1.5" transform="rotate(15 130 98)"/>
+                            <ellipse cx="160" cy="90" rx="4" ry="8" fill="${C.blue}" stroke="${C.ink}" stroke-width="1.5" transform="rotate(15 160 90)"/>
+                            <ellipse cx="190" cy="100" rx="2.5" ry="5" fill="${C.blue}" stroke="${C.ink}" stroke-width="1.5" transform="rotate(15 190 100)"/>
+                            <ellipse cx="220" cy="92" rx="3" ry="6" fill="${C.blue}" stroke="${C.ink}" stroke-width="1.5" transform="rotate(15 220 92)"/>
+                            <ellipse cx="150" cy="118" rx="35" ry="5" fill="${C.blueLight}" stroke="${C.ink}" stroke-width="2" opacity="0.6"/>
+                        `;
+                    } else {
+                        content = `
+                            <path d="M50 55 Q50 30 85 30 Q95 12 130 20 Q165 8 195 25 Q225 15 245 38 Q270 38 270 58 Q270 78 245 78 L80 78 Q50 78 50 55" fill="${C.inkLight}" stroke="${C.ink}" stroke-width="3.5"/>
+                            <polygon points="150,75 138,100 150,100 130,125 165,92 153,92 172,75" fill="${C.yellow}" stroke="${C.ink}" stroke-width="2.5" stroke-linejoin="round"/>
+                            <line x1="90" y1="85" x2="85" y2="100" stroke="${C.blue}" stroke-width="3" stroke-linecap="round"/>
+                            <line x1="110" y1="88" x2="105" y2="103" stroke="${C.blue}" stroke-width="3" stroke-linecap="round"/>
+                            <line x1="200" y1="85" x2="195" y2="100" stroke="${C.blue}" stroke-width="3" stroke-linecap="round"/>
+                            <line x1="220" y1="88" x2="215" y2="103" stroke="${C.blue}" stroke-width="3" stroke-linecap="round"/>
+                            <path d="M230 95 Q225 100 230 105 Q235 110 230 115" stroke="${C.ink}" stroke-width="2" fill="none" stroke-linecap="round"/>
+                        `;
+                    }
+                    return makeSvg(content);
+                }
+            },
+            {
+                id: 'scene3',
+                prompt: 'Look in the mirror and see ( )',
+                options: ['a pall of loneliness','a toothpaste ad','boundless wheat fields','a lotus in full bloom','a pair of eyes crossing'],
+                renderIllustration: function(selected) {
+                    let content = '';
+                    const mirrorFrame = `
+                        <rect x="80" y="12" width="140" height="110" rx="24" fill="${C.cream}" stroke="${C.ink}" stroke-width="4"/>
+                        <rect x="88" y="20" width="124" height="94" rx="18" fill="${C.blueLight}" stroke="${C.inkLight}" stroke-width="2" opacity="0.5"/>
+                    `;
+                    if (selected === 'a pall of loneliness') {
+                        content = `
+                            ${mirrorFrame}
+                            <circle cx="150" cy="62" r="16" fill="${C.greyLight}" stroke="${C.ink}" stroke-width="3"/>
+                            <line x1="142" y1="58" x2="148" y2="64" stroke="${C.ink}" stroke-width="2.5" stroke-linecap="round"/>
+                            <line x1="158" y1="58" x2="152" y2="64" stroke="${C.ink}" stroke-width="2.5" stroke-linecap="round"/>
+                            <path d="M144 74 Q150 70 156 74" stroke="${C.ink}" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                            <ellipse cx="140" cy="70" rx="2" ry="4" fill="${C.blue}" stroke="${C.ink}" stroke-width="1.5"/>
+                            <ellipse cx="150" cy="108" rx="30" ry="5" fill="${C.grey}" opacity="0.4"/>
+                            <path d="M185 35 Q185 25 195 25 Q200 18 210 22 Q218 18 222 26 Q228 26 228 34 Q228 42 218 42 L192 42 Q183 42 185 35" fill="${C.grey}" stroke="${C.ink}" stroke-width="2"/>
+                        `;
+                    } else if (selected === 'a toothpaste ad') {
+                        content = `
+                            ${mirrorFrame}
+                            <rect x="110" y="50" width="80" height="30" rx="15" fill="${C.white}" stroke="${C.ink}" stroke-width="3"/>
+                            <rect x="110" y="50" width="20" height="30" rx="8" fill="${C.blue}" stroke="${C.ink}" stroke-width="3"/>
+                            <circle cx="175" cy="65" r="6" fill="${C.blue}" stroke="${C.ink}" stroke-width="2"/>
+                            <path d="M110 62 Q95 60 90 70 Q88 78 95 82" stroke="${C.white}" stroke-width="6" fill="none" stroke-linecap="round"/>
+                            <path d="M125 38 L127 44 L133 44 L128 48 L130 54 L125 50 L120 54 L122 48 L117 44 L123 44 Z" fill="${C.yellow}" stroke="${C.ink}" stroke-width="1.5"/>
+                            <path d="M180 35 L182 40 L187 40 L183 43 L185 48 L180 45 L175 48 L177 43 L173 40 L178 40 Z" fill="${C.yellow}" stroke="${C.ink}" stroke-width="1.5"/>
+                            <rect x="130" y="88" width="10" height="12" rx="2" fill="${C.white}" stroke="${C.ink}" stroke-width="2"/>
+                            <rect x="145" y="88" width="10" height="12" rx="2" fill="${C.white}" stroke="${C.ink}" stroke-width="2"/>
+                            <rect x="160" y="88" width="10" height="12" rx="2" fill="${C.white}" stroke="${C.ink}" stroke-width="2"/>
+                        `;
+                    } else if (selected === 'boundless wheat fields') {
+                        content = `
+                            ${mirrorFrame}
+                            <rect x="88" y="70" width="124" height="44" rx="0" fill="${C.yellow}" opacity="0.6"/>
+                            <circle cx="150" cy="35" r="14" fill="${C.orange}" stroke="${C.ink}" stroke-width="2.5"/>
+                            <path d="M100 110 L100 80 M100 88 L95 82 M100 88 L105 82 M100 96 L94 90 M100 96 L106 90" stroke="${C.brown}" stroke-width="2.5" stroke-linecap="round"/>
+                            <path d="M130 112 L130 75 M130 85 L124 78 M130 85 L136 78 M130 95 L123 88 M130 95 L137 88 M130 105 L122 98 M130 105 L138 98" stroke="${C.brown}" stroke-width="2.5" stroke-linecap="round"/>
+                            <path d="M160 112 L160 75 M160 85 L154 78 M160 85 L166 78 M160 95 L153 88 M160 95 L167 88" stroke="${C.brown}" stroke-width="2.5" stroke-linecap="round"/>
+                            <path d="M190 110 L190 80 M190 88 L185 82 M190 88 L195 82 M190 96 L184 90 M190 96 L196 90" stroke="${C.brown}" stroke-width="2.5" stroke-linecap="round"/>
+                        `;
+                    } else if (selected === 'a lotus in full bloom') {
+                        content = `
+                            ${mirrorFrame}
+                            <ellipse cx="150" cy="100" rx="50" ry="8" fill="${C.blueLight}" opacity="0.6"/>
+                            <ellipse cx="110" cy="98" rx="18" ry="6" fill="${C.green}" stroke="${C.ink}" stroke-width="2"/>
+                            <ellipse cx="190" cy="100" rx="16" ry="5" fill="${C.green}" stroke="${C.ink}" stroke-width="2"/>
+                            <ellipse cx="150" cy="80" rx="8" ry="4" fill="${C.inkLight}"/>
+                            <path d="M150 75 Q140 55 150 45 Q160 55 150 75" fill="${C.pink}" stroke="${C.ink}" stroke-width="2.5"/>
+                            <path d="M150 75 Q130 60 128 50 Q142 52 150 75" fill="${C.pink}" stroke="${C.ink}" stroke-width="2.5" opacity="0.8"/>
+                            <path d="M150 75 Q170 60 172 50 Q158 52 150 75" fill="${C.pink}" stroke="${C.ink}" stroke-width="2.5" opacity="0.8"/>
+                            <circle cx="150" cy="62" r="4" fill="${C.yellow}" stroke="${C.ink}" stroke-width="1.5"/>
+                            <path d="M120 108 Q125 104 130 108 Q125 112 120 108" fill="${C.orange}" stroke="${C.ink}" stroke-width="1.5"/>
+                        `;
+                    } else {
+                        content = `
+                            ${mirrorFrame}
+                            <ellipse cx="130" cy="60" rx="18" ry="14" fill="${C.white}" stroke="${C.ink}" stroke-width="3"/>
+                            <ellipse cx="170" cy="60" rx="18" ry="14" fill="${C.white}" stroke="${C.ink}" stroke-width="3"/>
+                            <circle cx="140" cy="62" r="6" fill="${C.ink}"/>
+                            <circle cx="160" cy="62" r="6" fill="${C.ink}"/>
+                            <circle cx="138" cy="60" r="2" fill="${C.white}"/>
+                            <circle cx="158" cy="60" r="2" fill="${C.white}"/>
+                            <path d="M112 42 Q130 36 148 44" stroke="${C.ink}" stroke-width="3" fill="none" stroke-linecap="round"/>
+                            <path d="M152 44 Q170 36 188 42" stroke="${C.ink}" stroke-width="3" fill="none" stroke-linecap="round"/>
+                            <path d="M145 88 Q150 92 155 88" stroke="${C.ink}" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                        `;
+                    }
+                    return makeSvg(content);
+                }
+            },
+            {
+                id: 'scene4',
+                prompt: 'Thoughts turn to what to eat and drink ( )',
+                options: ['some bread with sugar and peanut butter','the teahouse is sure to be packed','God, no more instant noodles','an apple',"there's nothing to eat in the fridge"],
+                renderIllustration: function(selected) {
+                    let content = '';
+                    if (selected === 'some bread with sugar and peanut butter') {
+                        content = `
+                            <ellipse cx="150" cy="112" rx="80" ry="8" fill="${C.inkLight}" opacity="0.15"/>
+                            <ellipse cx="150" cy="100" rx="75" ry="12" fill="${C.cream}" stroke="${C.ink}" stroke-width="3"/>
+                            <path d="M90 85 L90 60 Q90 45 105 45 Q120 45 120 60 L120 85 Z" fill="${C.brownLight}" stroke="${C.ink}" stroke-width="3"/>
+                            <path d="M100 85 L100 55 Q100 48 108 48 Q115 48 115 55 L115 85" fill="${C.yellow}" opacity="0.4"/>
+                            <ellipse cx="105" cy="70" rx="10" ry="6" fill="${C.brown}" stroke="${C.ink}" stroke-width="2"/>
+                            <path d="M120 85 L120 60 Q120 45 135 45 Q150 45 150 60 L150 85 Z" fill="${C.brownLight}" stroke="${C.ink}" stroke-width="3"/>
+                            <ellipse cx="135" cy="70" rx="10" ry="6" fill="${C.brown}" stroke="${C.ink}" stroke-width="2"/>
+                            <circle cx="100" cy="62" r="1.5" fill="${C.white}"/>
+                            <circle cx="110" cy="65" r="1.5" fill="${C.white}"/>
+                            <circle cx="130" cy="62" r="1.5" fill="${C.white}"/>
+                            <circle cx="140" cy="66" r="1.5" fill="${C.white}"/>
+                            <path d="M165 85 L170 60 L195 60 L200 85 Z" fill="${C.blueLight}" stroke="${C.ink}" stroke-width="3"/>
+                            <path d="M195 68 Q205 68 205 75 Q205 82 195 82" stroke="${C.ink}" stroke-width="3" fill="none"/>
+                            <path d="M178 50 Q174 42 178 34 M186 50 Q182 42 186 34" stroke="${C.inkLight}" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.6"/>
+                        `;
+                    } else if (selected === 'the teahouse is sure to be packed') {
+                        content = `
+                            <ellipse cx="150" cy="115" rx="80" ry="8" fill="${C.inkLight}" opacity="0.15"/>
+                            <ellipse cx="120" cy="80" rx="32" ry="22" fill="${C.red}" stroke="${C.ink}" stroke-width="3.5"/>
+                            <path d="M120 58 Q120 48 130 48 Q140 48 140 58" fill="${C.red}" stroke="${C.ink}" stroke-width="3"/>
+                            <path d="M152 75 Q170 70 172 58" stroke="${C.ink}" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+                            <path d="M88 78 Q75 78 75 90 Q75 100 88 100" stroke="${C.ink}" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+                            <circle cx="120" cy="82" r="4" fill="${C.yellow}"/>
+                            <path d="M185 78 L190 60 L220 60 L225 78 Z" fill="${C.cream}" stroke="${C.ink}" stroke-width="3"/>
+                            <path d="M220 66 Q232 66 232 74 Q232 82 220 82" stroke="${C.ink}" stroke-width="3" fill="none"/>
+                            <path d="M200 50 Q196 42 200 34 M210 50 Q206 42 210 34" stroke="${C.inkLight}" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.6"/>
+                            <ellipse cx="150" cy="105" rx="20" ry="6" fill="${C.brownLight}" stroke="${C.ink}" stroke-width="2"/>
+                            <path d="M140 105 Q150 88 160 105" fill="${C.cream}" stroke="${C.ink}" stroke-width="2"/>
+                            <path d="M145 98 L150 92 L155 98" stroke="${C.ink}" stroke-width="1.5" fill="none"/>
+                        `;
+                    } else if (selected === 'God, no more instant noodles') {
+                        content = `
+                            <ellipse cx="150" cy="112" rx="70" ry="8" fill="${C.inkLight}" opacity="0.15"/>
+                            <path d="M110 45 L118 100 Q118 108 130 108 L170 108 Q182 108 182 100 L190 45 Z" fill="${C.cream}" stroke="${C.ink}" stroke-width="3.5"/>
+                            <ellipse cx="150" cy="45" rx="40" ry="10" fill="${C.white}" stroke="${C.ink}" stroke-width="3"/>
+                            <path d="M125 55 Q130 65 125 75 M140 55 Q145 65 140 75 M155 55 Q160 65 155 75 M170 55 Q175 65 170 75" stroke="${C.yellow}" stroke-width="3" fill="none" stroke-linecap="round"/>
+                            <circle cx="150" cy="75" r="20" fill="none" stroke="${C.red}" stroke-width="4" opacity="0.8"/>
+                            <line x1="135" y1="60" x2="165" y2="90" stroke="${C.red}" stroke-width="4" opacity="0.8" stroke-linecap="round"/>
+                            <line x1="195" y1="40" x2="215" y2="100" stroke="${C.brown}" stroke-width="3" stroke-linecap="round"/>
+                            <line x1="205" y1="40" x2="225" y2="100" stroke="${C.brown}" stroke-width="3" stroke-linecap="round"/>
+                        `;
+                    } else if (selected === 'an apple') {
+                        content = `
+                            <ellipse cx="150" cy="112" rx="60" ry="8" fill="${C.inkLight}" opacity="0.15"/>
+                            <circle cx="150" cy="70" r="35" fill="${C.red}" stroke="${C.ink}" stroke-width="4"/>
+                            <path d="M150 38 Q150 25 160 20" stroke="${C.brown}" stroke-width="4" fill="none" stroke-linecap="round"/>
+                            <path d="M160 22 Q178 12 182 28 Q168 32 160 22" fill="${C.green}" stroke="${C.ink}" stroke-width="2.5"/>
+                            <ellipse cx="135" cy="58" rx="8" ry="12" fill="${C.white}" opacity="0.4" transform="rotate(-20 135 58)"/>
+                            <circle cx="205" cy="85" r="18" fill="${C.red}" stroke="${C.ink}" stroke-width="3" opacity="0.7"/>
+                            <path d="M205 68 Q205 60 210 58" stroke="${C.brown}" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                        `;
+                    } else {
+                        content = `
+                            <rect x="85" y="20" width="130" height="100" rx="8" fill="${C.greyLight}" stroke="${C.ink}" stroke-width="4"/>
+                            <line x1="85" y1="55" x2="215" y2="55" stroke="${C.ink}" stroke-width="3"/>
+                            <rect x="175" y="35" width="8" height="14" rx="3" fill="${C.ink}"/>
+                            <rect x="175" y="65" width="8" height="14" rx="3" fill="${C.ink}"/>
+                            <path d="M85 55 L55 70 L55 120 L85 110" fill="${C.greyLight}" stroke="${C.ink}" stroke-width="3"/>
+                            <path d="M95 25 Q100 30 95 35 M100 25 Q105 30 100 35" stroke="${C.inkLight}" stroke-width="1.5" fill="none" opacity="0.5"/>
+                            <circle cx="150" cy="90" r="4" fill="${C.green}" stroke="${C.ink}" stroke-width="1.5"/>
+                        `;
+                    }
+                    return makeSvg(content);
+                }
+            },
+            {
+                id: 'scene5',
+                prompt: "When putting on jeans, coins fall out of the pocket and roll all over the floor. In the end, two can't be found. The explanation for that is ( )",
+                options: ['bad things happen to Leos','troubles have ended','try harder to save some money?',"there'll be a fountain here",'the earth is still young'],
+                renderIllustration: function(selected) {
+                    let content = '';
+                    if (selected === 'bad things happen to Leos') {
+                        content = `
+                            <ellipse cx="150" cy="112" rx="80" ry="8" fill="${C.inkLight}" opacity="0.15"/>
+                            <circle cx="150" cy="60" r="35" fill="${C.yellow}" stroke="${C.ink}" stroke-width="4"/>
+                            <path d="M135 50 Q135 38 145 38 Q155 38 155 50 Q155 62 145 62" stroke="${C.ink}" stroke-width="3" fill="none" stroke-linecap="round"/>
+                            <circle cx="145" cy="70" r="8" fill="${C.ink}"/>
+                            <circle cx="105" cy="95" r="8" fill="${C.yellow}" stroke="${C.ink}" stroke-width="2.5"/>
+                            <circle cx="125" cy="105" r="7" fill="${C.yellow}" stroke="${C.ink}" stroke-width="2.5"/>
+                            <circle cx="185" cy="100" r="9" fill="${C.yellow}" stroke="${C.ink}" stroke-width="2.5"/>
+                            <circle cx="205" cy="90" r="6" fill="${C.yellow}" stroke="${C.ink}" stroke-width="2.5"/>
+                            <path d="M215 30 Q215 18 228 18 Q240 18 240 30 Q240 40 228 42 L228 50" stroke="${C.inkLight}" stroke-width="3" fill="none" stroke-linecap="round"/>
+                            <circle cx="228" cy="58" r="3" fill="${C.inkLight}"/>
+                        `;
+                    } else if (selected === 'troubles have ended') {
+                        content = `
+                            <ellipse cx="150" cy="112" rx="80" ry="8" fill="${C.inkLight}" opacity="0.15"/>
+                            <circle cx="150" cy="62" r="40" fill="${C.green}" stroke="${C.ink}" stroke-width="4" opacity="0.85"/>
+                            <path d="M128 62 L145 80 L175 45" stroke="${C.white}" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M90 30 L100 40 M210 30 L200 40 M70 70 L85 65 M230 70 L215 65" stroke="${C.orange}" stroke-width="3" stroke-linecap="round"/>
+                            <circle cx="100" cy="80" r="3" fill="${C.pink}"/>
+                            <circle cx="200" cy="85" r="3" fill="${C.blue}"/>
+                            <circle cx="120" cy="25" r="2.5" fill="${C.yellow}"/>
+                            <circle cx="180" cy="25" r="2.5" fill="${C.yellow}"/>
+                        `;
+                    } else if (selected === 'try harder to save some money?') {
+                        content = `
+                            <ellipse cx="150" cy="112" rx="80" ry="8" fill="${C.inkLight}" opacity="0.15"/>
+                            <ellipse cx="150" cy="80" rx="45" ry="30" fill="${C.pink}" stroke="${C.ink}" stroke-width="4"/>
+                            <ellipse cx="150" cy="82" rx="38" ry="24" fill="${C.pink}" opacity="0.5"/>
+                            <ellipse cx="130" cy="82" rx="10" ry="7" fill="${C.pink}" stroke="${C.ink}" stroke-width="2.5"/>
+                            <circle cx="127" cy="82" r="2" fill="${C.ink}"/>
+                            <circle cx="133" cy="82" r="2" fill="${C.ink}"/>
+                            <path d="M165 58 Q175 45 185 55" stroke="${C.ink}" stroke-width="3" fill="${C.pink}"/>
+                            <rect x="140" y="50" width="20" height="4" rx="2" fill="${C.ink}"/>
+                            <circle cx="150" cy="38" r="8" fill="${C.yellow}" stroke="${C.ink}" stroke-width="2.5"/>
+                            <ellipse cx="120" cy="108" rx="8" ry="4" fill="${C.pink}" stroke="${C.ink}" stroke-width="2"/>
+                            <ellipse cx="180" cy="108" rx="8" ry="4" fill="${C.pink}" stroke="${C.ink}" stroke-width="2"/>
+                            <circle cx="135" cy="68" r="2.5" fill="${C.ink}"/>
+                            <circle cx="145" cy="68" r="2.5" fill="${C.ink}"/>
+                        `;
+                    } else if (selected === "there'll be a fountain here") {
+                        content = `
+                            <ellipse cx="150" cy="112" rx="70" ry="8" fill="${C.inkLight}" opacity="0.15"/>
+                            <ellipse cx="150" cy="100" rx="60" ry="14" fill="${C.blueLight}" stroke="${C.ink}" stroke-width="3"/>
+                            <ellipse cx="150" cy="100" rx="50" ry="10" fill="${C.blue}" opacity="0.4"/>
+                            <path d="M150 100 Q150 50 120 30 M150 100 Q150 50 180 30 M150 100 Q145 60 150 20" stroke="${C.blue}" stroke-width="4" fill="none" stroke-linecap="round"/>
+                            <circle cx="120" cy="25" r="5" fill="${C.blue}" opacity="0.7"/>
+                            <circle cx="180" cy="25" r="5" fill="${C.blue}" opacity="0.7"/>
+                            <circle cx="150" cy="15" r="6" fill="${C.blue}" opacity="0.7"/>
+                            <circle cx="135" cy="20" r="3" fill="${C.blue}" opacity="0.5"/>
+                            <circle cx="165" cy="20" r="3" fill="${C.blue}" opacity="0.5"/>
+                            <circle cx="115" cy="95" r="6" fill="${C.yellow}" stroke="${C.ink}" stroke-width="2"/>
+                            <circle cx="185" cy="95" r="6" fill="${C.yellow}" stroke="${C.ink}" stroke-width="2"/>
+                        `;
+                    } else {
+                        content = `
+                            <ellipse cx="150" cy="112" rx="70" ry="8" fill="${C.inkLight}" opacity="0.15"/>
+                            <circle cx="150" cy="65" r="40" fill="${C.blueLight}" stroke="${C.ink}" stroke-width="4"/>
+                            <path d="M125 45 Q135 35 150 40 Q160 35 170 45 Q165 55 155 52 Q145 58 135 52 Z" fill="${C.green}" stroke="${C.ink}" stroke-width="2"/>
+                            <path d="M145 85 Q155 78 165 85 Q160 95 150 92 Q142 95 145 85 Z" fill="${C.green}" stroke="${C.ink}" stroke-width="2"/>
+                            <circle cx="135" cy="60" r="3" fill="${C.ink}"/>
+                            <circle cx="165" cy="60" r="3" fill="${C.ink}"/>
+                            <path d="M140 72 Q150 80 160 72" stroke="${C.ink}" stroke-width="3" fill="none" stroke-linecap="round"/>
+                            <path d="M220 40 L222 46 L228 46 L223 50 L225 56 L220 52 L215 56 L217 50 L212 46 L218 46 Z" fill="${C.yellow}" stroke="${C.ink}" stroke-width="1.5"/>
+                        `;
+                    }
+                    return makeSvg(content);
+                }
+            },
+            {
+                id: 'scene6',
+                prompt: 'Come to a decision. For this afternoon ( )',
+                options: ['the hamper full of dirty clothes can wait till Monday','go swimming at Sai Wan beach, with its big waves','sing in the rain','write an application letter for an interesting job','start writing a great novel'],
+                renderIllustration: function(selected) {
+                    let content = '';
+                    if (selected === 'the hamper full of dirty clothes can wait till Monday') {
+                        content = `
+                            <ellipse cx="150" cy="115" rx="70" ry="8" fill="${C.inkLight}" opacity="0.15"/>
+                            <path d="M90 55 L100 110 Q100 115 110 115 L190 115 Q200 115 200 110 L210 55 Z" fill="${C.brownLight}" stroke="${C.ink}" stroke-width="4"/>
+                            <path d="M90 55 Q90 40 110 40 L190 40 Q210 40 210 55" stroke="${C.ink}" stroke-width="4" fill="none"/>
+                            <line x1="100" y1="75" x2="200" y2="75" stroke="${C.brown}" stroke-width="2" opacity="0.5"/>
+                            <line x1="103" y1="95" x2="197" y2="95" stroke="${C.brown}" stroke-width="2" opacity="0.5"/>
+                            <line x1="120" y1="55" x2="125" y2="115" stroke="${C.brown}" stroke-width="2" opacity="0.4"/>
+                            <line x1="150" y1="55" x2="150" y2="115" stroke="${C.brown}" stroke-width="2" opacity="0.4"/>
+                            <line x1="180" y1="55" x2="175" y2="115" stroke="${C.brown}" stroke-width="2" opacity="0.4"/>
+                            <path d="M110 50 Q120 30 140 35 Q150 25 165 35 Q185 30 190 50" fill="${C.pink}" stroke="${C.ink}" stroke-width="2.5"/>
+                            <path d="M130 45 Q140 35 155 40" stroke="${C.ink}" stroke-width="2" fill="none"/>
+                            <path d="M105 50 Q100 65 110 70 Q120 72 120 60" stroke="${C.blue}" stroke-width="2.5" fill="${C.blueLight}"/>
+                            <rect x="160" y="22" width="60" height="22" rx="5" fill="${C.cream}" stroke="${C.ink}" stroke-width="2.5" transform="rotate(-5 190 33)"/>
+                            <text x="172" y="38" font-family="Comic Sans MS, cursive" font-size="13" fill="${C.ink}" font-weight="bold" transform="rotate(-5 172 38)">MON</text>
+                        `;
+                    } else if (selected === 'go swimming at Sai Wan beach, with its big waves') {
+                        content = `
+                            <ellipse cx="150" cy="115" rx="80" ry="8" fill="${C.inkLight}" opacity="0.15"/>
+                            <path d="M60 100 Q150 90 240 100" stroke="${C.ink}" stroke-width="3" fill="none"/>
+                            <rect x="60" y="100" width="180" height="15" fill="${C.yellow}" opacity="0.6"/>
+                            <path d="M60 85 Q80 60 110 75 Q140 55 170 70 Q200 50 230 70 L240 85 Q200 90 150 85 Q100 90 60 85" fill="${C.blue}" stroke="${C.ink}" stroke-width="3"/>
+                            <path d="M80 78 Q100 68 120 76 Q140 66 160 74" stroke="${C.white}" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0.7"/>
+                            <circle cx="220" cy="30" r="15" fill="${C.yellow}" stroke="${C.ink}" stroke-width="2.5"/>
+                            <path d="M220 8 L220 14 M220 46 L220 52 M198 30 L204 30 M236 30 L242 30" stroke="${C.orange}" stroke-width="2.5" stroke-linecap="round"/>
+                            <circle cx="110" cy="95" r="10" fill="${C.white}" stroke="${C.ink}" stroke-width="2.5"/>
+                            <path d="M100 95 L120 95 M110 85 L110 105" stroke="${C.red}" stroke-width="2"/>
+                            <path d="M80 30 Q88 22 96 30 Q104 22 112 30" stroke="${C.ink}" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                        `;
+                    } else if (selected === 'sing in the rain') {
+                        content = `
+                            <ellipse cx="150" cy="115" rx="80" ry="8" fill="${C.inkLight}" opacity="0.15"/>
+                            <path d="M60 50 Q60 30 90 30 Q100 15 130 22 Q160 10 190 25 Q220 15 240 35 Q265 35 265 55 Q265 72 240 72 L85 72 Q60 72 60 50" fill="${C.grey}" stroke="${C.ink}" stroke-width="3"/>
+                            <line x1="80" y1="80" x2="76" y2="95" stroke="${C.blue}" stroke-width="2.5" stroke-linecap="round"/>
+                            <line x1="110" y1="82" x2="106" y2="97" stroke="${C.blue}" stroke-width="2.5" stroke-linecap="round"/>
+                            <line x1="190" y1="82" x2="186" y2="97" stroke="${C.blue}" stroke-width="2.5" stroke-linecap="round"/>
+                            <line x1="220" y1="80" x2="216" y2="95" stroke="${C.blue}" stroke-width="2.5" stroke-linecap="round"/>
+                            <circle cx="150" cy="88" r="12" fill="${C.yellow}" stroke="${C.ink}" stroke-width="3"/>
+                            <circle cx="146" cy="86" r="1.5" fill="${C.ink}"/>
+                            <circle cx="154" cy="86" r="1.5" fill="${C.ink}"/>
+                            <ellipse cx="150" cy="93" rx="4" ry="3" fill="${C.ink}"/>
+                            <text x="175" y="75" font-family="Arial" font-size="18" fill="${C.ink}" font-weight="bold">♪</text>
+                            <text x="190" y="65" font-family="Arial" font-size="22" fill="${C.ink}" font-weight="bold">♫</text>
+                            <path d="M100 60 Q130 30 160 60" fill="${C.red}" stroke="${C.ink}" stroke-width="3"/>
+                            <line x1="130" y1="60" x2="130" y2="105" stroke="${C.ink}" stroke-width="3" stroke-linecap="round"/>
+                            <path d="M130 105 Q125 110 120 105" stroke="${C.ink}" stroke-width="3" fill="none" stroke-linecap="round"/>
+                        `;
+                    } else if (selected === 'write an application letter for an interesting job') {
+                        content = `
+                            <ellipse cx="150" cy="115" rx="80" ry="8" fill="${C.inkLight}" opacity="0.15"/>
+                            <rect x="70" y="30" width="160" height="80" rx="4" fill="${C.white}" stroke="${C.ink}" stroke-width="3" transform="rotate(-2 150 70)"/>
+                            <line x1="85" y1="50" x2="215" y2="48" stroke="${C.blueLight}" stroke-width="2" transform="rotate(-2 150 70)"/>
+                            <line x1="85" y1="65" x2="215" y2="63" stroke="${C.blueLight}" stroke-width="2" transform="rotate(-2 150 70)"/>
+                            <line x1="85" y1="80" x2="215" y2="78" stroke="${C.blueLight}" stroke-width="2" transform="rotate(-2 150 70)"/>
+                            <line x1="85" y1="95" x2="180" y2="93" stroke="${C.blueLight}" stroke-width="2" transform="rotate(-2 150 70)"/>
+                            <path d="M200 50 L230 35 L235 42 L205 57 Z" fill="${C.blue}" stroke="${C.ink}" stroke-width="2.5"/>
+                            <path d="M200 50 L195 58 L205 57" fill="${C.ink}"/>
+                            <rect x="100" y="95" width="20" height="18" rx="3" fill="${C.ink}" stroke="${C.ink}" stroke-width="2"/>
+                            <rect x="105" y="90" width="10" height="6" rx="2" fill="${C.grey}" stroke="${C.ink}" stroke-width="1.5"/>
+                        `;
+                    } else {
+                        content = `
+                            <ellipse cx="150" cy="115" rx="80" ry="8" fill="${C.inkLight}" opacity="0.15"/>
+                            <path d="M80 60 Q150 50 150 60 L150 105 Q150 95 80 105 Z" fill="${C.cream}" stroke="${C.ink}" stroke-width="3"/>
+                            <path d="M220 60 Q150 50 150 60 L150 105 Q150 95 220 105 Z" fill="${C.cream}" stroke="${C.ink}" stroke-width="3"/>
+                            <line x1="95" y1="70" x2="140" y2="68" stroke="${C.inkLight}" stroke-width="1.5" opacity="0.5"/>
+                            <line x1="95" y1="80" x2="140" y2="78" stroke="${C.inkLight}" stroke-width="1.5" opacity="0.5"/>
+                            <line x1="95" y1="90" x2="140" y2="88" stroke="${C.inkLight}" stroke-width="1.5" opacity="0.5"/>
+                            <line x1="160" y1="68" x2="205" y2="70" stroke="${C.inkLight}" stroke-width="1.5" opacity="0.5"/>
+                            <line x1="160" y1="78" x2="205" y2="80" stroke="${C.inkLight}" stroke-width="1.5" opacity="0.5"/>
+                            <path d="M180 45 Q200 25 210 20 Q205 35 195 50 Q190 55 185 50 Z" fill="${C.white}" stroke="${C.ink}" stroke-width="2.5"/>
+                            <line x1="185" y1="50" x2="175" y2="65" stroke="${C.ink}" stroke-width="2.5" stroke-linecap="round"/>
+                            <ellipse cx="120" cy="108" rx="12" ry="6" fill="${C.ink}" stroke="${C.ink}" stroke-width="2"/>
+                            <path d="M230 25 L232 31 L238 31 L233 35 L235 41 L230 37 L225 41 L227 35 L222 31 L228 31 Z" fill="${C.yellow}" stroke="${C.ink}" stroke-width="1.5"/>
+                        `;
+                    }
+                    return makeSvg(content);
+                }
+            },
+            {
+                id: 'scene7',
+                prompt: "There's the doorbell. The door opens and it's ( )",
+                options: ['a broom salesman','someone here to collect the building management fee','someone here to repossess a record player over lapsed payments','a telegram','nobody in the hallway','a roomful of hydrogen balloons that float in'],
+                renderIllustration: function(selected) {
+                    let content = '';
+                    if (selected === 'a broom salesman') {
+                        // 补全：人物身体、手臂、扫帚完整
+                        content = `
+                            <ellipse cx="150" cy="115" rx="70" ry="8" fill="${C.inkLight}" opacity="0.15"/>
+                            <rect x="90" y="20" width="120" height="95" rx="6" fill="${C.brownLight}" stroke="${C.ink}" stroke-width="4"/>
+                            <circle cx="195" cy="65" r="5" fill="${C.yellow}" stroke="${C.ink}" stroke-width="2"/>
+                            <!-- 人物：头 -->
+                            <circle cx="150" cy="50" r="13" fill="${C.yellow}" stroke="${C.ink}" stroke-width="3"/>
+                            <circle cx="145" cy="48" r="1.5" fill="${C.ink}"/>
+                            <circle cx="155" cy="48" r="1.5" fill="${C.ink}"/>
+                            <path d="M147 55 Q150 57 153 55" stroke="${C.ink}" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                            <!-- 人物：身体 -->
+                            <path d="M135 63 Q150 58 165 63 L165 100 L135 100 Z" fill="${C.blue}" stroke="${C.ink}" stroke-width="3"/>
+                            <!-- 人物：手臂 -->
+                            <path d="M135 68 L120 80" stroke="${C.ink}" stroke-width="3" stroke-linecap="round"/>
+                            <path d="M165 68 L175 75" stroke="${C.ink}" stroke-width="3" stroke-linecap="round"/>
+                            <!-- 人物：腿 -->
+                            <line x1="142" y1="100" x2="142" y2="112" stroke="${C.ink}" stroke-width="3" stroke-linecap="round"/>
+                            <line x1="158" y1="100" x2="158" y2="112" stroke="${C.ink}" stroke-width="3" stroke-linecap="round"/>
+                            <!-- 扫帚：完整 -->
+                            <line x1="120" y1="28" x2="105" y2="105" stroke="${C.brown}" stroke-width="4" stroke-linecap="round"/>
+                            <path d="M105 105 L95 118 L115 118 L120 105" fill="${C.yellow}" stroke="${C.ink}" stroke-width="2.5"/>
+                            <line x1="97" y1="115" x2="102" y2="105" stroke="${C.brown}" stroke-width="1.5"/>
+                            <line x1="105" y1="118" x2="108" y2="106" stroke="${C.brown}" stroke-width="1.5"/>
+                            <line x1="113" y1="115" x2="112" y2="105" stroke="${C.brown}" stroke-width="1.5"/>
+                        `;
+                    } else if (selected === 'someone here to collect the building management fee') {
+                        content = `
+                            <ellipse cx="150" cy="115" rx="70" ry="8" fill="${C.inkLight}" opacity="0.15"/>
+                            <rect x="90" y="20" width="120" height="95" rx="6" fill="${C.brownLight}" stroke="${C.ink}" stroke-width="4"/>
+                            <circle cx="195" cy="65" r="5" fill="${C.yellow}" stroke="${C.ink}" stroke-width="2"/>
+                            <circle cx="150" cy="55" r="13" fill="${C.yellow}" stroke="${C.ink}" stroke-width="3"/>
+                            <circle cx="145" cy="53" r="1.5" fill="${C.ink}"/>
+                            <circle cx="155" cy="53" r="1.5" fill="${C.ink}"/>
+                            <path d="M135 78 Q150 68 165 78 L165 95 L135 95 Z" fill="${C.blue}" stroke="${C.ink}" stroke-width="2.5"/>
+                            <rect x="165" y="60" width="20" height="25" rx="2" fill="${C.white}" stroke="${C.ink}" stroke-width="2"/>
+                            <line x1="170" y1="67" x2="180" y2="67" stroke="${C.inkLight}" stroke-width="1.5"/>
+                            <line x1="170" y1="73" x2="180" y2="73" stroke="${C.inkLight}" stroke-width="1.5"/>
+                            <line x1="170" y1="79" x2="178" y2="79" stroke="${C.inkLight}" stroke-width="1.5"/>
+                            <path d="M105 90 Q100 80 110 78 Q120 80 115 90 Z" fill="${C.brown}" stroke="${C.ink}" stroke-width="2"/>
+                            <text x="106" y="88" font-family="Arial" font-size="10" fill="${C.yellow}" font-weight="bold">$</text>
+                        `;
+                    } else if (selected === 'someone here to repossess a record player over lapsed payments') {
+                        content = `
+                            <ellipse cx="150" cy="115" rx="70" ry="8" fill="${C.inkLight}" opacity="0.15"/>
+                            <rect x="90" y="20" width="120" height="95" rx="6" fill="${C.brownLight}" stroke="${C.ink}" stroke-width="4"/>
+                            <circle cx="195" cy="65" r="5" fill="${C.yellow}" stroke="${C.ink}" stroke-width="2"/>
+                            <rect x="115" y="65" width="60" height="35" rx="4" fill="${C.grey}" stroke="${C.ink}" stroke-width="3"/>
+                            <circle cx="145" cy="82" r="14" fill="${C.ink}"/>
+                            <circle cx="145" cy="82" r="8" fill="${C.inkLight}"/>
+                            <circle cx="145" cy="82" r="2" fill="${C.yellow}"/>
+                            <path d="M165 70 L175 65" stroke="${C.ink}" stroke-width="3" stroke-linecap="round"/>
+                            <rect x="105" y="28" width="55" height="20" rx="4" fill="${C.red}" stroke="${C.ink}" stroke-width="2" transform="rotate(-5 132 38)"/>
+                            <text x="115" y="42" font-family="Comic Sans MS, cursive" font-size="10" fill="${C.white}" font-weight="bold" transform="rotate(-5 115 42)">REPO</text>
+                        `;
+                    } else if (selected === 'a telegram') {
+                        content = `
+                            <ellipse cx="150" cy="115" rx="70" ry="8" fill="${C.inkLight}" opacity="0.15"/>
+                            <rect x="90" y="20" width="120" height="95" rx="6" fill="${C.brownLight}" stroke="${C.ink}" stroke-width="4"/>
+                            <circle cx="195" cy="65" r="5" fill="${C.yellow}" stroke="${C.ink}" stroke-width="2"/>
+                            <rect x="105" y="50" width="80" height="45" rx="3" fill="${C.cream}" stroke="${C.ink}" stroke-width="3"/>
+                            <path d="M105 50 L145 75 L185 50" stroke="${C.ink}" stroke-width="2.5" fill="none"/>
+                            <rect x="165" y="55" width="14" height="14" rx="1" fill="${C.blueLight}" stroke="${C.ink}" stroke-width="1.5" stroke-dasharray="2 2"/>
+                            <polygon points="230,30 222,45 230,45 220,60 236,42 227,42 238,30" fill="${C.yellow}" stroke="${C.ink}" stroke-width="2"/>
+                        `;
+                    } else if (selected === 'nobody in the hallway') {
+                        content = `
+                            <ellipse cx="150" cy="115" rx="70" ry="8" fill="${C.inkLight}" opacity="0.15"/>
+                            <rect x="90" y="20" width="60" height="95" rx="6" fill="${C.brownLight}" stroke="${C.ink}" stroke-width="4"/>
+                            <path d="M150 20 L180 35 L180 115 L150 115 Z" fill="${C.cream}" stroke="${C.ink}" stroke-width="3"/>
+                            <circle cx="145" cy="65" r="4" fill="${C.yellow}" stroke="${C.ink}" stroke-width="2"/>
+                            <rect x="180" y="35" width="40" height="80" fill="${C.greyLight}" stroke="${C.ink}" stroke-width="2"/>
+                            <line x1="180" y1="35" x2="220" y2="35" stroke="${C.ink}" stroke-width="2"/>
+                            <path d="M90 20 Q100 30 90 40 M100 20 Q110 30 100 40 M90 20 L100 20" stroke="${C.inkLight}" stroke-width="1.5" fill="none" opacity="0.6"/>
+                            <path d="M200 90 Q210 85 215 95 Q205 98 200 90" fill="${C.green}" stroke="${C.ink}" stroke-width="1.5"/>
+                        `;
+                    } else {
+                        content = `
+                            <ellipse cx="150" cy="115" rx="70" ry="8" fill="${C.inkLight}" opacity="0.15"/>
+                            <rect x="90" y="20" width="120" height="95" rx="6" fill="${C.brownLight}" stroke="${C.ink}" stroke-width="4" opacity="0.5"/>
+                            <circle cx="195" cy="65" r="5" fill="${C.yellow}" stroke="${C.ink}" stroke-width="2" opacity="0.5"/>
+                            <ellipse cx="110" cy="45" rx="16" ry="20" fill="${C.pink}" stroke="${C.ink}" stroke-width="2.5"/>
+                            <ellipse cx="150" cy="30" rx="18" ry="22" fill="${C.blueLight}" stroke="${C.ink}" stroke-width="2.5"/>
+                            <ellipse cx="190" cy="45" rx="15" ry="19" fill="${C.yellow}" stroke="${C.ink}" stroke-width="2.5"/>
+                            <ellipse cx="130" cy="80" rx="14" ry="18" fill="${C.green}" stroke="${C.ink}" stroke-width="2.5"/>
+                            <ellipse cx="175" cy="85" rx="16" ry="20" fill="${C.pink}" stroke="${C.ink}" stroke-width="2.5"/>
+                            <line x1="110" y1="65" x2="115" y2="100" stroke="${C.inkLight}" stroke-width="1.5"/>
+                            <line x1="150" y1="52" x2="150" y2="100" stroke="${C.inkLight}" stroke-width="1.5"/>
+                            <line x1="190" y1="64" x2="185" y2="100" stroke="${C.inkLight}" stroke-width="1.5"/>
+                            <line x1="130" y1="98" x2="130" y2="105" stroke="${C.inkLight}" stroke-width="1.5"/>
+                            <line x1="175" y1="105" x2="175" y2="108" stroke="${C.inkLight}" stroke-width="1.5"/>
+                            <ellipse cx="105" cy="38" rx="4" ry="6" fill="${C.white}" opacity="0.5"/>
+                            <ellipse cx="145" cy="22" rx="5" ry="7" fill="${C.white}" opacity="0.5"/>
+                            <ellipse cx="185" cy="38" rx="4" ry="5" fill="${C.white}" opacity="0.5"/>
+                        `;
+                    }
+                    return makeSvg(content);
+                }
+            }
+        ];
+
+        // ================================================================
+        // 狀態管理
+        // ================================================================
+        let customIllustrations = JSON.parse(localStorage.getItem('customIllustrations') || '{}');
+        let customBg = localStorage.getItem('customBg') || '';
+        let selectedOptions = {};
+        let stickers = [];
+        let selectedStickerIndex = -1;
+        let currentTool = null;
+        let pendingAdminData = null;
+        let userImageLibrary = [];
+        let brushSize = 4;
+
+        let history = [];
+        let historyIndex = -1;
+        let isSaved = false;
+
+        let isDrawingMode = false;
+        let drawingSnapshot = null;
+
+        const ADMIN_PASSWORD = '9900';
+
+        // ================================================================
+        // 圖片壓縮
+        // ================================================================
+        const MAX_IMAGE_DIM = 1200;
+        const TARGET_BYTES = 300 * 1024;
+
+        function compressImageFile(file, callback) {
+            const isSvg = file.type === 'image/svg+xml' || file.name.toLowerCase().endsWith('.svg');
+            const reader = new FileReader();
+
+            if (isSvg) {
+                reader.onload = (ev) => {
+                    const dataUrl = ev.target.result;
+                    if (dataUrl.length > 150000) alert('SVG too large, may fail to save.');
+                    callback({ type: 'svg', data: dataUrl });
+                };
+                reader.readAsDataURL(file);
+                return;
+            }
+
+            reader.onload = (ev) => {
+                const img = new Image();
+                img.onload = () => {
+                    let w = img.naturalWidth, h = img.naturalHeight;
+                    if (w > MAX_IMAGE_DIM || h > MAX_IMAGE_DIM) {
+                        const ratio = Math.min(MAX_IMAGE_DIM / w, MAX_IMAGE_DIM / h);
+                        w = Math.round(w * ratio);
+                        h = Math.round(h * ratio);
+                    }
+                    const tmpCanvas = document.createElement('canvas');
+                    tmpCanvas.width = w; tmpCanvas.height = h;
+                    const tmpCtx = tmpCanvas.getContext('2d');
+                    tmpCtx.drawImage(img, 0, 0, w, h);
+
+                    let hasAlpha = false;
+                    try {
+                        const data = tmpCtx.getImageData(0, 0, w, h).data;
+                        for (let i = 3; i < data.length; i += 28) {
+                            if (data[i] < 255) { hasAlpha = true; break; }
+                        }
+                    } catch (e) { hasAlpha = true; }
+
+                    let outData;
+                    if (hasAlpha) {
+                        outData = tmpCanvas.toDataURL('image/png');
+                    } else {
+                        const outCanvas = document.createElement('canvas');
+                        outCanvas.width = w; outCanvas.height = h;
+                        const octx = outCanvas.getContext('2d');
+                        octx.fillStyle = '#ffffff';
+                        octx.fillRect(0, 0, w, h);
+                        octx.drawImage(img, 0, 0, w, h);
+                        outData = outCanvas.toDataURL('image/jpeg', 0.82);
+                    }
+
+                    let guard = 0;
+                    while (outData.length > TARGET_BYTES && guard < 4) {
+                        guard++;
+                        w = Math.max(200, Math.round(w * 0.85));
+                        h = Math.max(200, Math.round(h * 0.85));
+                        const c2 = document.createElement('canvas');
+                        c2.width = w; c2.height = h;
+                        const cx = c2.getContext('2d');
+                        if (!hasAlpha) { cx.fillStyle = '#fff'; cx.fillRect(0, 0, w, h); }
+                        cx.drawImage(img, 0, 0, w, h);
+                        outData = hasAlpha
+                            ? c2.toDataURL('image/png')
+                            : c2.toDataURL('image/jpeg', Math.max(0.65, 0.82 - guard * 0.05));
+                    }
+                    callback({ type: 'img', data: outData });
+                };
+                img.onerror = () => alert('Failed to load image.');
+                img.src = ev.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function safeSaveToStorage() {
+            const illustStr = JSON.stringify(customIllustrations);
+            const bgStr = customBg || '';
+            const total = illustStr.length + bgStr.length;
+            const LIMIT = 4.5 * 1024 * 1024;
+            if (total > LIMIT) {
+                const mb = (total / 1024 / 1024).toFixed(2);
+                alert(`Saved data is ${mb} MB, exceeds browser limit (~5MB).\n\nTips:\n• Re-upload smaller illustrations\n• Remove some old illustrations\n• To let ALL users see changes, you need a real backend server.`);
+                return false;
+            }
+            const backup = {
+                customIllustrations: localStorage.getItem('customIllustrations'),
+                customBg: localStorage.getItem('customBg')
+            };
+            try {
+                localStorage.setItem('customIllustrations', illustStr);
+                if (customBg) localStorage.setItem('customBg', customBg);
+                else localStorage.removeItem('customBg');
+                return true;
+            } catch (e) {
+                try {
+                    if (backup.customIllustrations !== null) localStorage.setItem('customIllustrations', backup.customIllustrations);
+                    else localStorage.removeItem('customIllustrations');
+                    if (backup.customBg !== null) localStorage.setItem('customBg', backup.customBg);
+                    else localStorage.removeItem('customBg');
+                } catch (e2) {}
+                alert('Browser storage is full even after compression.\nPlease remove some old illustrations.');
+                return false;
+            }
+        }
+
+        // ================================================================
+        // 歷史記錄
+        // ================================================================
+        function saveHistory() {
+            const state = JSON.stringify({ stickers: stickers, canvasData: canvas.toDataURL() });
+            if (historyIndex < history.length - 1) history = history.slice(0, historyIndex + 1);
+            history.push(state);
+            historyIndex = history.length - 1;
+            updateUndoRedoButtons();
+            updateSidebar();
+        }
+        function undo() {
+            if (historyIndex > 0) { historyIndex--; restoreState(history[historyIndex]); updateUndoRedoButtons(); }
+        }
+        function redo() {
+            if (historyIndex < history.length - 1) { historyIndex++; restoreState(history[historyIndex]); updateUndoRedoButtons(); }
+        }
+        function restoreState(stateStr) {
+            const state = JSON.parse(stateStr);
+            stickers = state.stickers || [];
+            renderNotebook();
+            const img = new Image();
+            img.onload = () => {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                const dpr = window.devicePixelRatio || 1;
+                ctx.drawImage(img, 0, 0, canvas.width / dpr, canvas.height / dpr);
+            };
+            if (state.canvasData) img.src = state.canvasData;
+            updateSidebar();
+        }
+        function updateUndoRedoButtons() {
+            document.getElementById('undoBtn').disabled = historyIndex <= 0;
+            document.getElementById('redoBtn').disabled = historyIndex >= history.length - 1;
+        }
+
+        // ================================================================
+        // 渲染場景
+        // ================================================================
+        function renderScenes() {
+            const grid = document.getElementById('sceneGrid');
+            if (!grid) return;
+            grid.innerHTML = '';
+            scenes.forEach((scene) => {
+                const card = document.createElement('div');
+                card.className = 'scene-card';
+                card.id = scene.id;
+                const promptDiv = document.createElement('div');
+                promptDiv.className = 'scene-prompt';
+                promptDiv.textContent = scene.prompt;
+                card.appendChild(promptDiv);
+                const optionsDiv = document.createElement('div');
+                optionsDiv.className = 'options';
+                scene.options.forEach(opt => {
+                    const btn = document.createElement('button');
+                    btn.className = 'option-btn';
+                    btn.textContent = opt;
+                    btn.dataset.option = opt;
+                    btn.dataset.sceneId = scene.id;
+                    btn.addEventListener('click', (e) => handleOptionClick(e, scene, opt));
+                    optionsDiv.appendChild(btn);
+                });
+                card.appendChild(optionsDiv);
+                const illusDiv = document.createElement('div');
+                illusDiv.className = 'illustration-area';
+                illusDiv.id = `illus-${scene.id}`;
+                illusDiv.innerHTML = `<div style="color:#b48b5e; font-style:italic; padding:1rem;">✏️ Pick an option</div>`;
+                card.appendChild(illusDiv);
+                grid.appendChild(card);
+            });
+        }
+
+        function getIllustrationHTML(sceneId, option) {
+            const custom = customIllustrations[sceneId]?.[option];
+            if (custom) {
+                if (custom.type === 'img') return `<img src="${custom.data}" alt="${option}" style="max-width:100%; max-height:130px;" />`;
+                if (custom.type === 'svg') return custom.data;
+            }
+            const scene = scenes.find(s => s.id === sceneId);
+            if (scene) return scene.renderIllustration(option);
+            return '';
+        }
+
+        function handleOptionClick(event, scene, selectedOption) {
+            document.querySelectorAll(`.option-btn[data-scene-id="${scene.id}"]`).forEach(b => b.classList.remove('selected'));
+            event.target.classList.add('selected');
+            selectedOptions[scene.id] = selectedOption;
+            const illusContainer = document.getElementById(`illus-${scene.id}`);
+            if (illusContainer) {
+                illusContainer.innerHTML = getIllustrationHTML(scene.id, selectedOption) + 
+                    `<div class="illustration-caption">"${selectedOption}"</div>`;
+            }
+            document.getElementById('finishToolbar').style.display = 'flex';
+        }
+
+        // ================================================================
+        // 管理員密碼
+        // ================================================================
+        function requestAdminAccess() {
+            document.getElementById('passwordOverlay').classList.remove('hidden');
+            document.getElementById('passwordInput').value = '';
+            document.getElementById('passwordError').textContent = '';
+            document.getElementById('passwordInput').focus();
+        }
+        function verifyPassword() {
+            const input = document.getElementById('passwordInput').value.trim();
+            if (input === ADMIN_PASSWORD) {
+                document.getElementById('passwordOverlay').classList.add('hidden');
+                pendingAdminData = {
+                    customIllustrations: JSON.parse(JSON.stringify(customIllustrations)),
+                    customBg: customBg
+                };
+                openAdminPanel();
+            } else {
+                document.getElementById('passwordError').textContent = 'Incorrect password. Try again.';
+                document.getElementById('passwordInput').value = '';
+                document.getElementById('passwordInput').focus();
+            }
+        }
+
+        // ================================================================
+        // 管理員面板
+        // ================================================================
+        function openAdminPanel() {
+            const overlay = document.getElementById('adminPanelOverlay');
+            renderBgPreview();
+            renderAdminOptionsList();
+            overlay.classList.remove('hidden');
+        }
+        function closeAdminPanel() {
+            if (pendingAdminData) {
+                customIllustrations = pendingAdminData.customIllustrations;
+                customBg = pendingAdminData.customBg;
+                pendingAdminData = null;
+                applyCustomBg();
+                Object.keys(selectedOptions).forEach(sceneId => {
+                    const opt = selectedOptions[sceneId];
+                    const ic = document.getElementById(`illus-${sceneId}`);
+                    if (ic) ic.innerHTML = getIllustrationHTML(sceneId, opt) + `<div class="illustration-caption">"${opt}"</div>`;
+                });
+            }
+            document.getElementById('adminPanelOverlay').classList.add('hidden');
+        }
+        function saveAdminChanges() {
+            const ok = safeSaveToStorage();
+            if (ok) {
+                pendingAdminData = null;
+                applyCustomBg();
+                Object.keys(selectedOptions).forEach(sceneId => {
+                    const opt = selectedOptions[sceneId];
+                    const ic = document.getElementById(`illus-${sceneId}`);
+                    if (ic) ic.innerHTML = getIllustrationHTML(sceneId, opt) + `<div class="illustration-caption">"${opt}"</div>`;
+                });
+                alert('Changes saved! Users will now see the updated illustrations and background.\n\nNote: This only applies to YOUR browser. To share with all users, you need a backend server.');
+                document.getElementById('adminPanelOverlay').classList.add('hidden');
+            }
+        }
+        function renderBgPreview() {
+            const preview = document.getElementById('bgPreview');
+            if (customBg) preview.innerHTML = `<img src="${customBg}" alt="bg" />`;
+            else preview.innerHTML = '<span style="color:#b48b5e;font-size:0.7rem;">No bg</span>';
+            applyCustomBg();
+        }
+        function applyCustomBg() {
+            const layer = document.getElementById('customBgLayer');
+            if (customBg) layer.style.backgroundImage = `url(${customBg})`;
+            else layer.style.backgroundImage = 'none';
+        }
+
+        function renderAdminOptionsList() {
+            const list = document.getElementById('editorOptionsList');
+            list.innerHTML = '';
+            scenes.forEach(scene => {
+                const h = document.createElement('h3');
+                h.textContent = scene.prompt;
+                h.style.cssText = 'margin-top:1rem;margin-bottom:0.5rem;color:#5e3e2b;font-size:0.95rem;';
+                list.appendChild(h);
+
+                scene.options.forEach(opt => {
+                    const row = document.createElement('div');
+                    row.className = 'option-row';
+                    const label = document.createElement('label');
+                    label.textContent = opt;
+                    row.appendChild(label);
+
+                    const previewDiv = document.createElement('div');
+                    previewDiv.className = 'preview';
+                    const custom = customIllustrations[scene.id]?.[opt];
+                    if (custom) {
+                        if (custom.type === 'img') previewDiv.innerHTML = `<img src="${custom.data}" style="max-width:100%;max-height:100%;" />`;
+                        else previewDiv.innerHTML = custom.data;
+                    } else {
+                        const defSvg = scene.renderIllustration(opt);
+                        previewDiv.innerHTML = defSvg;
+                        const s = previewDiv.querySelector('svg');
+                        if (s) { s.setAttribute('width','40'); s.setAttribute('height','40'); }
+                    }
+                    row.appendChild(previewDiv);
+
+                    const fileInput = document.createElement('input');
+                    fileInput.type = 'file';
+                    fileInput.accept = 'image/*';
+                    fileInput.style.width = '110px';
+                    fileInput.addEventListener('change', (e) => {
+                        const file = e.target.files[0];
+                        if (!file) return;
+                        compressImageFile(file, (result) => {
+                            if (!customIllustrations[scene.id]) customIllustrations[scene.id] = {};
+                            customIllustrations[scene.id][opt] = { type: result.type, data: result.data };
+                            if (result.type === 'img') {
+                                previewDiv.innerHTML = `<img src="${result.data}" style="max-width:100%;max-height:100%;" />`;
+                            } else {
+                                previewDiv.innerHTML = result.data;
+                                const s = previewDiv.querySelector('svg');
+                                if (s) { s.setAttribute('width','40'); s.setAttribute('height','40'); }
+                            }
+                        });
+                    });
+                    row.appendChild(fileInput);
+
+                    const clearBtn = document.createElement('button');
+                    clearBtn.textContent = '✕';
+                    clearBtn.style.cssText = 'background:#d9c8b0;border:none;border-radius:50%;width:22px;height:22px;cursor:pointer;color:#5e3e2b;font-weight:bold;font-size:11px;';
+                    clearBtn.addEventListener('click', () => {
+                        if (customIllustrations[scene.id]?.[opt]) {
+                            delete customIllustrations[scene.id][opt];
+                            if (Object.keys(customIllustrations[scene.id]).length === 0) delete customIllustrations[scene.id];
+                            const defSvg = scene.renderIllustration(opt);
+                            previewDiv.innerHTML = defSvg;
+                            const s = previewDiv.querySelector('svg');
+                            if (s) { s.setAttribute('width','40'); s.setAttribute('height','40'); }
+                        }
+                    });
+                    row.appendChild(clearBtn);
+                    list.appendChild(row);
+                });
+            });
+        }
+
+        // ================================================================
+        // 使用者圖片庫
+        // ================================================================
+        function renderUserImagePanel() {
+            const panel = document.getElementById('imagePanel');
+            panel.innerHTML = '';
+            if (userImageLibrary.length === 0) {
+                const emptyMsg = document.createElement('span');
+                emptyMsg.className = 'image-empty';
+                emptyMsg.textContent = 'Upload your own images to use in the notebook.';
+                panel.appendChild(emptyMsg);
+            } else {
+                userImageLibrary.forEach((img, idx) => {
+                    const div = document.createElement('div');
+                    div.className = 'image-item';
+                    div.title = 'Click to add to notebook';
+                    if (img.type === 'img') div.innerHTML = `<img src="${img.data}" alt="image" />`;
+                    else {
+                        div.innerHTML = img.data;
+                        const s = div.querySelector('svg');
+                        if (s) { s.setAttribute('width','46'); s.setAttribute('height','46'); }
+                    }
+                    const removeBtn = document.createElement('button');
+                    removeBtn.className = 'remove-img';
+                    removeBtn.textContent = '×';
+                    removeBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        userImageLibrary.splice(idx, 1);
+                        renderUserImagePanel();
+                    });
+                    div.appendChild(removeBtn);
+                    div.addEventListener('click', () => addImageSticker(img));
+                    panel.appendChild(div);
+                });
+            }
+
+            const uploadWrapper = document.createElement('div');
+            uploadWrapper.className = 'upload-btn-wrapper';
+            const uploadBtn = document.createElement('div');
+            uploadBtn.className = 'upload-btn';
+            uploadBtn.textContent = '＋ Upload';
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = 'image/*';
+            fileInput.multiple = true;
+            fileInput.addEventListener('change', (e) => {
+                const files = e.target.files;
+                if (!files || files.length === 0) return;
+                Array.from(files).forEach(file => {
+                    compressImageFile(file, (result) => {
+                        userImageLibrary.push({ type: result.type, data: result.data });
+                        renderUserImagePanel();
+                    });
+                });
+                fileInput.value = '';
+            });
+            uploadWrapper.appendChild(uploadBtn);
+            uploadWrapper.appendChild(fileInput);
+            panel.appendChild(uploadWrapper);
+        }
+
+        function addImageSticker(img) {
+            if (isSaved) return;
+            const maxZ = stickers.reduce((m, s) => Math.max(m, s.zIndex || 0), 0);
+            stickers.push({
+                type: img.type, content: img.data,
+                x: 80 + Math.random() * 200, y: 80 + Math.random() * 200,
+                scale: 1, rotation: 0, zIndex: maxZ + 1, fixed: false
+            });
+            renderNotebook();
+            saveHistory();
+        }
+
+        // ================================================================
+        // 筆記本邏輯
+        // ================================================================
+        function goToNotebook() {
+            if (Object.keys(selectedOptions).length === 0) {
+                alert('Please select at least one option first.');
+                return;
+            }
+            stickers = [];
+            Object.keys(selectedOptions).forEach(sceneId => {
+                const option = selectedOptions[sceneId];
+                const scene = scenes.find(s => s.id === sceneId);
+                if (!scene) return;
+                const custom = customIllustrations[sceneId]?.[option];
+                let content, type;
+                if (custom) { content = custom.data; type = custom.type; }
+                else { content = scene.renderIllustration(option); type = 'svg'; }
+                stickers.push({
+                    type, content, sceneId, option,
+                    x: 30 + Math.random() * 250, y: 30 + Math.random() * 250,
+                    scale: 1, rotation: 0, zIndex: stickers.length + 1, fixed: false
+                });
+            });
+
+            document.getElementById('sceneGrid').style.display = 'none';
+            document.getElementById('finishToolbar').style.display = 'none';
+            document.getElementById('notebookPage').classList.add('active');
+
+            renderUserImagePanel();
+            renderNotebook();
+            setTimeout(() => { resizeCanvas(); saveHistory(); }, 100);
+            isSaved = false;
+            updateModeUI();
+        }
+
+        function renderNotebook() {
+            const area = document.getElementById('stickerArea');
+            area.innerHTML = '';
+            const sorted = stickers.slice().sort((a,b) => (a.zIndex||0) - (b.zIndex||0));
+
+            sorted.forEach((sticker) => {
+                const idx = stickers.indexOf(sticker);
+                let el;
+                if (sticker.type === 'text') {
+                    el = document.createElement('div');
+                    el.className = 'editable-text';
+                    el.textContent = sticker.content || 'Double-click to edit';
+                    el.dataset.index = idx;
+                    el.style.left = sticker.x + 'px';
+                    el.style.top = sticker.y + 'px';
+                    el.style.zIndex = sticker.zIndex || 1;
+                    el.style.fontSize = (sticker.fontSize || 16) + 'px';
+                    el.style.transform = `rotate(${sticker.rotation || 0}deg)`;
+                    el.style.transformOrigin = 'top left';
+                    el.addEventListener('dblclick', (e) => {
+                        if (isSaved) return;
+                        e.stopPropagation();
+                        el.contentEditable = 'true';
+                        el.focus();
+                        setTimeout(() => el.scrollIntoView({ block: 'center', behavior: 'smooth' }), 300);
+                        const range = document.createRange();
+                        range.selectNodeContents(el);
+                        const sel = window.getSelection();
+                        sel.removeAllRanges();
+                        sel.addRange(range);
+                    });
+                    el.addEventListener('blur', () => {
+                        el.contentEditable = 'false';
+                        stickers[idx].content = el.textContent;
+                    });
+                    el.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); el.blur(); }
+                    });
+                    el.addEventListener('mousedown', (e) => {
+                        if (el.contentEditable === 'true') return;
+                        if (e.target.classList.contains('delete-btn')) return;
+                        e.stopPropagation();
+                        if (isSaved) selectSticker(idx, true);
+                        else selectSticker(idx);
+                    });
+                    const delBtn = document.createElement('button');
+                    delBtn.className = 'delete-btn';
+                    delBtn.textContent = '×';
+                    delBtn.addEventListener('click', (e) => { e.stopPropagation(); if (isSaved) return; deleteSticker(idx); });
+                    el.appendChild(delBtn);
+                } else {
+                    el = document.createElement('div');
+                    el.className = 'sticker';
+                    el.dataset.index = idx;
+                    el.style.left = sticker.x + 'px';
+                    el.style.top = sticker.y + 'px';
+                    el.style.zIndex = sticker.zIndex || 1;
+                    const s = sticker.scale || 1;
+                    const r = sticker.rotation || 0;
+                    el.style.transform = `rotate(${r}deg) scale(${s})`;
+                    el.style.transformOrigin = 'top left';
+
+                    if (sticker.type === 'img') {
+                        el.innerHTML = `<img src="${sticker.content}" alt="${sticker.option || 'sticker'}" style="max-width:180px; max-height:130px;" />`;
+                    } else {
+                        el.innerHTML = sticker.content;
+                        const svgEl = el.querySelector('svg');
+                        if (svgEl) { svgEl.setAttribute('width','180'); svgEl.setAttribute('height','auto'); }
+                    }
+
+                    if (!sticker.fixed && !isSaved) {
+                        const handle = document.createElement('div');
+                        handle.className = 'resize-handle';
+                        handle.addEventListener('pointerdown', (e) => { e.stopPropagation(); e.preventDefault(); startResize(e, idx, el); });
+                        el.appendChild(handle);
+
+                        const rotHandle = document.createElement('div');
+                        rotHandle.className = 'rotate-handle';
+                        rotHandle.textContent = '↻';
+                        rotHandle.addEventListener('pointerdown', (e) => { e.stopPropagation(); e.preventDefault(); startRotate(e, idx, el); });
+                        el.appendChild(rotHandle);
+
+                        const delBtn = document.createElement('button');
+                        delBtn.className = 'delete-btn';
+                        delBtn.textContent = '×';
+                        delBtn.addEventListener('click', (e) => { e.stopPropagation(); deleteSticker(idx); });
+                        el.appendChild(delBtn);
+                    }
+
+                    el.addEventListener('pointerdown', (e) => {
+                        if (e.target.classList.contains('resize-handle') || 
+                            e.target.classList.contains('rotate-handle') || 
+                            e.target.classList.contains('delete-btn')) return;
+                        e.stopPropagation();
+                        if (isSaved) selectSticker(idx, true);
+                        else selectSticker(idx);
+                    });
+                }
+                if (!sticker.fixed && !isSaved) makeDraggable(el, idx);
+                area.appendChild(el);
+            });
+        }
+
+        function deleteSticker(idx) {
+            if (isSaved) return;
+            stickers.splice(idx, 1);
+            selectedStickerIndex = -1;
+            document.getElementById('scaleControls').style.display = 'none';
+            updateSidebar();
+            renderNotebook();
+            saveHistory();
+        }
+
+        function selectSticker(idx, readOnly) {
+            selectedStickerIndex = idx;
+            document.querySelectorAll('.sticker.selected, .editable-text.selected').forEach(el => el.classList.remove('selected'));
+            const area = document.getElementById('stickerArea');
+            const el = area.querySelector(`[data-index="${idx}"]`);
+            if (el) el.classList.add('selected');
+            const controls = document.getElementById('scaleControls');
+            const sticker = stickers[idx];
+            if (sticker && sticker.type !== 'text') {
+                controls.style.display = 'flex';
+                document.getElementById('scaleValue').textContent = Math.round((sticker.scale || 1) * 100) + '%';
+            } else {
+                controls.style.display = 'none';
+            }
+            updateSidebar();
+        }
+
+        function deselectSticker() {
+            selectedStickerIndex = -1;
+            document.querySelectorAll('.sticker.selected, .editable-text.selected').forEach(el => el.classList.remove('selected'));
+            document.getElementById('scaleControls').style.display = 'none';
+            updateSidebar();
+        }
+
+        function startResize(e, idx, el) {
+            if (isSaved || stickers[idx].fixed) return;
+            el.setPointerCapture(e.pointerId);
+            const startX = e.clientX, startY = e.clientY;
+            const startScale = stickers[idx].scale || 1;
+            function onMove(ev) {
+                const dx = ev.clientX - startX;
+                const dy = ev.clientY - startY;
+                const delta = Math.max(dx, dy) / 100;
+                let newScale = startScale + delta;
+                newScale = Math.max(0.2, Math.min(4, newScale));
+                stickers[idx].scale = newScale;
+                el.style.transform = `rotate(${stickers[idx].rotation || 0}deg) scale(${newScale})`;
+                document.getElementById('scaleValue').textContent = Math.round(newScale * 100) + '%';
+            }
+            function onUp() {
+                el.removeEventListener('pointermove', onMove);
+                el.removeEventListener('pointerup', onUp);
+                el.removeEventListener('pointercancel', onUp);
+                renderNotebook(); selectSticker(idx); saveHistory();
+            }
+            el.addEventListener('pointermove', onMove);
+            el.addEventListener('pointerup', onUp);
+            el.addEventListener('pointercancel', onUp);
+        }
+
+        function startRotate(e, idx, el) {
+            if (isSaved || stickers[idx].fixed) return;
+            el.setPointerCapture(e.pointerId);
+            const rect = el.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            const startAngle = stickers[idx].rotation || 0;
+            const startMouseAngle = Math.atan2(e.clientY - centerY, e.clientX - centerX) * 180 / Math.PI;
+            function onMove(ev) {
+                const mouseAngle = Math.atan2(ev.clientY - centerY, ev.clientX - centerX) * 180 / Math.PI;
+                let newAngle = startAngle + (mouseAngle - startMouseAngle);
+                newAngle = ((newAngle + 180) % 360 + 360) % 360 - 180;
+                stickers[idx].rotation = newAngle;
+                el.style.transform = `rotate(${newAngle}deg) scale(${stickers[idx].scale || 1})`;
+            }
+            function onUp() {
+                el.removeEventListener('pointermove', onMove);
+                el.removeEventListener('pointerup', onUp);
+                el.removeEventListener('pointercancel', onUp);
+                renderNotebook(); selectSticker(idx); saveHistory();
+            }
+            el.addEventListener('pointermove', onMove);
+            el.addEventListener('pointerup', onUp);
+            el.addEventListener('pointercancel', onUp);
+        }
+
+        function makeDraggable(el, idx) {
+            let isDragging = false;
+            let startX, startY, origX, origY;
+            el.addEventListener('pointerdown', (e) => {
+                if (el.classList.contains('editable-text') && el.contentEditable === 'true') return;
+                if (e.target.classList.contains('resize-handle') || 
+                    e.target.classList.contains('rotate-handle') || 
+                    e.target.classList.contains('delete-btn')) return;
+                if (currentTool || isSaved || stickers[idx].fixed) return;
+                e.preventDefault();
+                el.setPointerCapture(e.pointerId);
+                isDragging = true;
+                startX = e.clientX; startY = e.clientY;
+                origX = stickers[idx].x; origY = stickers[idx].y;
+                function onMove(ev) {
+                    if (!isDragging) return;
+                    const dx = ev.clientX - startX;
+                    const dy = ev.clientY - startY;
+                    stickers[idx].x = origX + dx;
+                    stickers[idx].y = origY + dy;
+                    el.style.left = stickers[idx].x + 'px';
+                    el.style.top = stickers[idx].y + 'px';
+                }
+                function onUp() {
+                    if (isDragging) {
+                        isDragging = false;
+                        el.removeEventListener('pointermove', onMove);
+                        el.removeEventListener('pointerup', onUp);
+                        el.removeEventListener('pointercancel', onUp);
+                        saveHistory();
+                    }
+                }
+                el.addEventListener('pointermove', onMove);
+                el.addEventListener('pointerup', onUp);
+                el.addEventListener('pointercancel', onUp);
+            });
+        }
+
+        document.getElementById('scaleUpBtn').addEventListener('click', () => {
+            if (selectedStickerIndex < 0 || isSaved) return;
+            const s = stickers[selectedStickerIndex];
+            if (!s || s.type === 'text' || s.fixed) return;
+            s.scale = Math.min(4, (s.scale || 1) + 0.1);
+            renderNotebook(); selectSticker(selectedStickerIndex); saveHistory();
+        });
+        document.getElementById('scaleDownBtn').addEventListener('click', () => {
+            if (selectedStickerIndex < 0 || isSaved) return;
+            const s = stickers[selectedStickerIndex];
+            if (!s || s.type === 'text' || s.fixed) return;
+            s.scale = Math.max(0.2, (s.scale || 1) - 0.1);
+            renderNotebook(); selectSticker(selectedStickerIndex); saveHistory();
+        });
+
+        // ================================================================
+        // 側欄
+        // ================================================================
+        function updateSidebar() {
+            const content = document.getElementById('sidebarContent');
+            if (selectedStickerIndex < 0 || !stickers[selectedStickerIndex]) {
+                content.innerHTML = '<p class="sidebar-empty">Select an element to see controls.</p>';
+                return;
+            }
+            const s = stickers[selectedStickerIndex];
+            let html = `<div class="sidebar-section">
+                <h4>Element Info</h4>
+                <div class="sidebar-info">Type: ${s.type === 'text' ? 'Text' : (s.type === 'img' ? 'Image' : 'SVG')}</div>
+                <div class="sidebar-info">Position: (${Math.round(s.x)}, ${Math.round(s.y)})</div>
+                <div class="sidebar-info">Scale: ${Math.round((s.scale||1)*100)}%</div>
+                <div class="sidebar-info">Rotation: ${Math.round(s.rotation||0)}°</div>
+                <div class="sidebar-info">Layer: ${s.zIndex||1}</div>
+            </div>
+            <div class="sidebar-section">
+                <h4>Fix (Lock)</h4>
+                <button class="sidebar-btn ${s.fixed ? 'active' : ''}" onclick="toggleFix()">${s.fixed ? '🔒 Fixed (click to unlock)' : '🔓 Unfixed'}</button>
+                <div class="sidebar-info" style="font-size:0.7rem;">Fixed elements are locked but can still be selected.</div>
+            </div>
+            <div class="sidebar-section">
+                <h4>Layer Order</h4>
+                <button class="sidebar-btn" onclick="moveLayerUp()">⬆️ Forward</button>
+                <button class="sidebar-btn" onclick="moveLayerDown()">⬇️ Backward</button>
+                <button class="sidebar-btn" onclick="moveLayerTop()">⏫ To Front</button>
+                <button class="sidebar-btn" onclick="moveLayerBottom()">⏬ To Back</button>
+            </div>
+            <div class="sidebar-section">
+                <h4>Rotation</h4>
+                <input type="range" min="-180" max="180" value="${s.rotation||0}" oninput="setRotation(this.value)" style="width:100%;accent-color:#b48b5e;">
+                <div class="sidebar-info" style="text-align:center;">${Math.round(s.rotation||0)}°</div>
+            </div>`;
+
+            const imageStickers = stickers.filter(st => st.type !== 'text');
+            if (imageStickers.length > 0) {
+                html += `<div class="sidebar-section">
+                    <h4>Layers (${imageStickers.length} images) — drag to reorder</h4>
+                    <div class="layer-list" id="layerList">`;
+                const sortedLayers = imageStickers.slice().sort((a,b) => (b.zIndex||0) - (a.zIndex||0));
+                sortedLayers.forEach((st, i) => {
+                    const idx = stickers.indexOf(st);
+                    const isActive = idx === selectedStickerIndex;
+                    let thumb = '';
+                    if (st.type === 'img') thumb = `<img src="${st.content}" style="max-width:100%;max-height:100%;" />`;
+                    else thumb = st.content;
+                    html += `<div class="layer-item ${isActive ? 'active' : ''}" data-idx="${idx}" data-z="${st.zIndex}" draggable="true" onclick="selectLayer(${idx})">
+                        <span class="drag-handle">⣿</span>
+                        <div class="layer-thumb">${thumb}</div>
+                        <div class="layer-name">Layer ${sortedLayers.length - i}${st.fixed ? ' 🔒' : ''}</div>
+                        <span class="layer-z">z:${st.zIndex}</span>
+                    </div>`;
+                });
+                html += `</div></div>`;
+            }
+            content.innerHTML = html;
+            setupLayerDragAndDrop();
+        }
+
+        function setupLayerDragAndDrop() {
+            const list = document.getElementById('layerList');
+            if (!list) return;
+            let dragSrcIdx = null;
+            list.querySelectorAll('.layer-item').forEach(item => {
+                item.addEventListener('dragstart', (e) => {
+                    dragSrcIdx = parseInt(item.dataset.idx);
+                    item.classList.add('dragging');
+                    e.dataTransfer.effectAllowed = 'move';
+                    e.dataTransfer.setData('text/plain', dragSrcIdx);
+                });
+                item.addEventListener('dragend', () => {
+                    item.classList.remove('dragging');
+                    list.querySelectorAll('.layer-item').forEach(el => el.classList.remove('drag-over'));
+                });
+                item.addEventListener('dragover', (e) => { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; item.classList.add('drag-over'); });
+                item.addEventListener('dragleave', () => item.classList.remove('drag-over'));
+                item.addEventListener('drop', (e) => {
+                    e.preventDefault(); e.stopPropagation();
+                    item.classList.remove('drag-over');
+                    const targetIdx = parseInt(item.dataset.idx);
+                    if (dragSrcIdx === null || dragSrcIdx === targetIdx) return;
+                    const imageStickers = stickers.filter(st => st.type !== 'text');
+                    const sorted = imageStickers.slice().sort((a,b) => (b.zIndex||0) - (a.zIndex||0));
+                    const srcPos = sorted.findIndex(st => stickers.indexOf(st) === dragSrcIdx);
+                    const tgtPos = sorted.findIndex(st => stickers.indexOf(st) === targetIdx);
+                    if (srcPos === -1 || tgtPos === -1) return;
+                    const [moved] = sorted.splice(srcPos, 1);
+                    sorted.splice(tgtPos, 0, moved);
+                    const total = sorted.length;
+                    sorted.forEach((st, i) => { st.zIndex = total - i; });
+                    renderNotebook(); updateSidebar(); saveHistory();
+                });
+            });
+        }
+
+        window.selectLayer = function(idx) {
+            if (isSaved) selectSticker(idx, true);
+            else selectSticker(idx);
+        };
+        window.toggleFix = function() {
+            if (selectedStickerIndex < 0 || isSaved) return;
+            stickers[selectedStickerIndex].fixed = !stickers[selectedStickerIndex].fixed;
+            renderNotebook(); selectSticker(selectedStickerIndex); saveHistory();
+        };
+        window.moveLayerUp = function() {
+            if (selectedStickerIndex < 0 || isSaved) return;
+            const s = stickers[selectedStickerIndex];
+            const maxZ = stickers.reduce((m, st) => Math.max(m, st.zIndex || 0), 0);
+            if (s.zIndex < maxZ) { s.zIndex = (s.zIndex || 1) + 1; renderNotebook(); selectSticker(selectedStickerIndex); saveHistory(); }
+        };
+        window.moveLayerDown = function() {
+            if (selectedStickerIndex < 0 || isSaved) return;
+            const s = stickers[selectedStickerIndex];
+            if (s.zIndex > 1) { s.zIndex = (s.zIndex || 1) - 1; renderNotebook(); selectSticker(selectedStickerIndex); saveHistory(); }
+        };
+        window.moveLayerTop = function() {
+            if (selectedStickerIndex < 0 || isSaved) return;
+            const s = stickers[selectedStickerIndex];
+            s.zIndex = stickers.reduce((m, st) => Math.max(m, st.zIndex || 0), 0) + 1;
+            renderNotebook(); selectSticker(selectedStickerIndex); saveHistory();
+        };
+        window.moveLayerBottom = function() {
+            if (selectedStickerIndex < 0 || isSaved) return;
+            const s = stickers[selectedStickerIndex];
+            s.zIndex = Math.max(1, stickers.reduce((m, st) => Math.min(m, st.zIndex || 1), Infinity) - 1);
+            renderNotebook(); selectSticker(selectedStickerIndex); saveHistory();
+        };
+        window.setRotation = function(val) {
+            if (selectedStickerIndex < 0 || isSaved) return;
+            const s = stickers[selectedStickerIndex];
+            if (s.fixed) return;
+            s.rotation = parseFloat(val);
+            renderNotebook(); selectSticker(selectedStickerIndex);
+        };
+
+        // ================================================================
+        // 绘画模式
+        // ================================================================
+        const canvas = document.getElementById('drawCanvas');
+        const ctx = canvas.getContext('2d', { willReadFrequently: true });
+        let isDrawing = false;
+        let isEraser = false;
+
+        const brushSizeRange = document.getElementById('brushSizeRange');
+        const brushSizeValue = document.getElementById('brushSizeValue');
+        const brushSizeControl = document.getElementById('brushSizeControl');
+        brushSizeRange.addEventListener('input', () => {
+            brushSize = parseInt(brushSizeRange.value, 10);
+            brushSizeValue.textContent = brushSize;
+        });
+
+        function resizeCanvas() {
+            const inner = document.getElementById('notebookPageInner');
+            if (!inner) return;
+            const rect = inner.getBoundingClientRect();
+            const dpr = window.devicePixelRatio || 1;
+            const prevData = canvas.toDataURL();
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            canvas.style.width = rect.width + 'px';
+            canvas.style.height = rect.height + 'px';
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            if (prevData && canvas.width > 0 && canvas.height > 0) {
+                const img = new Image();
+                img.onload = () => {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.drawImage(img, 0, 0, rect.width, rect.height);
+                };
+                img.src = prevData;
+            }
+        }
+        window.addEventListener('resize', () => setTimeout(resizeCanvas, 100));
+
+        function getCanvasCoords(e) {
+            const rect = canvas.getBoundingClientRect();
+            return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+        }
+
+        function setTool(tool) {
+            if (isSaved) return;
+            currentTool = tool;
+            const drawBtn = document.getElementById('drawModeBtn');
+            const eraserBtn = document.getElementById('eraserModeBtn');
+            const clearDrawBtn = document.getElementById('clearDrawBtn');
+            const saveBar = document.getElementById('drawingSaveBar');
+            if (tool === 'draw' || tool === 'eraser') {
+                canvas.classList.add('active');
+                canvas.style.cursor = tool === 'draw' ? 'crosshair' : 'cell';
+                isEraser = tool === 'eraser';
+                drawBtn.classList.toggle('active-tool', tool === 'draw');
+                eraserBtn.classList.toggle('active-tool', tool === 'eraser');
+                clearDrawBtn.style.display = 'inline-block';
+                brushSizeControl.style.display = 'flex';
+                saveBar.style.display = 'flex';
+                if (!drawingSnapshot) drawingSnapshot = JSON.stringify({ stickers: stickers, canvasData: canvas.toDataURL() });
+                document.querySelectorAll('.sticker, .editable-text').forEach(el => { el.style.pointerEvents = 'none'; });
+            } else {
+                canvas.classList.remove('active');
+                canvas.style.cursor = 'default';
+                drawBtn.classList.remove('active-tool');
+                eraserBtn.classList.remove('active-tool');
+                isEraser = false;
+                clearDrawBtn.style.display = 'none';
+                brushSizeControl.style.display = 'none';
+                saveBar.style.display = 'none';
+                drawingSnapshot = null;
+                document.querySelectorAll('.sticker, .editable-text').forEach(el => { el.style.pointerEvents = 'auto'; });
+                renderNotebook();
+            }
+            deselectSticker();
+        }
+
+        document.getElementById('drawModeBtn').addEventListener('click', () => setTool(currentTool === 'draw' ? null : 'draw'));
+        document.getElementById('eraserModeBtn').addEventListener('click', () => setTool(currentTool === 'eraser' ? null : 'eraser'));
+        document.getElementById('clearDrawBtn').addEventListener('click', () => {
+            if (confirm('Clear all drawing?')) ctx.clearRect(0, 0, canvas.width, canvas.height);
+        });
+
+        document.getElementById('saveDrawingBtn').addEventListener('click', () => {
+            const dataUrl = canvas.toDataURL('image/png');
+            const img = new Image();
+            img.onload = () => {
+                const tc = document.createElement('canvas');
+                tc.width = img.width; tc.height = img.height;
+                const tctx = tc.getContext('2d');
+                tctx.drawImage(img, 0, 0);
+                const imageData = tctx.getImageData(0, 0, tc.width, tc.height);
+                let hasContent = false;
+                for (let i = 3; i < imageData.data.length; i += 4) {
+                    if (imageData.data[i] > 0) { hasContent = true; break; }
+                }
+                if (!hasContent) { alert('No drawing to save. Please draw something first.'); return; }
+
+                const maxZ = stickers.reduce((m, s) => Math.max(m, s.zIndex || 0), 0);
+                stickers.push({
+                    type: 'img', content: dataUrl,
+                    x: 100 + Math.random() * 100, y: 100 + Math.random() * 100,
+                    scale: 1, rotation: 0, zIndex: maxZ + 1, fixed: false, isDrawing: true
+                });
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                setTool(null);
+                renderNotebook();
+                saveHistory();
+            };
+            img.src = dataUrl;
+        });
+
+        document.getElementById('cancelDrawingBtn').addEventListener('click', () => {
+            if (drawingSnapshot) {
+                const state = JSON.parse(drawingSnapshot);
+                stickers = state.stickers;
+                const img = new Image();
+                img.onload = () => {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    const dpr = window.devicePixelRatio || 1;
+                    ctx.drawImage(img, 0, 0, canvas.width / dpr, canvas.height / dpr);
+                };
+                img.src = state.canvasData;
+            }
+            setTool(null);
+            renderNotebook();
+        });
+
+        canvas.addEventListener('pointerdown', (e) => {
+            if (!currentTool || isSaved) return;
+            e.preventDefault();
+            canvas.setPointerCapture(e.pointerId);
+            const { x, y } = getCanvasCoords(e);
+            isDrawing = true;
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            ctx.lineWidth = brushSize;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            if (isEraser) { ctx.globalCompositeOperation = 'destination-out'; ctx.strokeStyle = 'rgba(0,0,0,1)'; }
+            else { ctx.globalCompositeOperation = 'source-over'; ctx.strokeStyle = '#5e3e2b'; }
+            ctx.lineTo(x + 0.1, y + 0.1);
+            ctx.stroke();
+        });
+        canvas.addEventListener('pointermove', (e) => {
+            if (!isDrawing || !currentTool || isSaved) return;
+            e.preventDefault();
+            const { x, y } = getCanvasCoords(e);
+            ctx.lineWidth = brushSize;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            if (isEraser) { ctx.globalCompositeOperation = 'destination-out'; ctx.strokeStyle = 'rgba(0,0,0,1)'; }
+            else { ctx.globalCompositeOperation = 'source-over'; ctx.strokeStyle = '#5e3e2b'; }
+            ctx.lineTo(x, y);
+            ctx.stroke();
+        });
+        canvas.addEventListener('pointerup', () => { isDrawing = false; ctx.beginPath(); });
+        canvas.addEventListener('pointercancel', () => { isDrawing = false; ctx.beginPath(); });
+
+        // ================================================================
+        // 保存/编辑模式
+        // ================================================================
+        function updateModeUI() {
+            const saveBtn = document.getElementById('saveBtn');
+            const editBtn = document.getElementById('editBtn');
+            const indicator = document.getElementById('modeIndicator');
+            const toolbarButtons = document.querySelectorAll('.toolbar button');
+            if (isSaved) {
+                saveBtn.style.display = 'none';
+                editBtn.style.display = 'inline-block';
+                indicator.textContent = 'Viewing (Locked)';
+                indicator.className = 'mode-indicator viewing';
+                toolbarButtons.forEach(btn => {
+                    if (btn.id !== 'editBtn' && btn.id !== 'backToSelectionBtn' && btn.id !== 'exportPngBtn' && btn.id !== 'exportJpgBtn') btn.disabled = true;
+                });
+            } else {
+                saveBtn.style.display = 'inline-block';
+                editBtn.style.display = 'none';
+                indicator.textContent = 'Editing';
+                indicator.className = 'mode-indicator editing';
+                toolbarButtons.forEach(btn => btn.disabled = false);
+            }
+        }
+        document.getElementById('saveBtn').addEventListener('click', () => {
+            isSaved = true;
+            deselectSticker();
+            setTool(null);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            renderNotebook();
+            updateModeUI();
+            saveHistory();
+            alert('Notebook saved! All elements are now locked. Click "Edit" to unlock.');
+        });
+        document.getElementById('editBtn').addEventListener('click', () => {
+            isSaved = false;
+            updateModeUI();
+            renderNotebook();
+        });
+
+        // ================================================================
+        // 导出高清 A4
+        // ================================================================
+        function exportNotebook(format) {
+            if (typeof html2canvas === 'undefined') {
+                const s = document.createElement('script');
+                s.src = 'https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js';
+                s.onload = () => doExport(format);
+                document.head.appendChild(s);
+            } else doExport(format);
+        }
+        function doExport(format) {
+            const inner = document.getElementById('notebookPageInner');
+            if (!inner) return;
+            const hiddenEls = [];
+            document.querySelectorAll('.delete-btn, .resize-handle, .rotate-handle').forEach(el => {
+                if (el.style.display !== 'none') { hiddenEls.push({ el, display: el.style.display }); el.style.display = 'none'; }
+            });
+            document.querySelectorAll('.sticker.selected, .editable-text.selected').forEach(el => el.classList.remove('selected'));
+            const active = document.activeElement;
+            if (active && active.classList.contains('editable-text')) active.blur();
+            const drawCanvasData = canvas.toDataURL('image/png');
+            const A4_WIDTH = 5940, A4_HEIGHT = 4200;
+            html2canvas(inner, {
+                scale: 2, useCORS: true, backgroundColor: '#fffcf6', allowTaint: false, logging: false,
+                onclone: (clonedDoc) => {
+                    const clonedInner = clonedDoc.getElementById('notebookPageInner');
+                    const clonedCanvas = clonedInner.querySelector('#drawCanvas');
+                    if (clonedCanvas) {
+                        const img = clonedDoc.createElement('img');
+                        img.src = drawCanvasData;
+                        img.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:500;';
+                        clonedCanvas.parentNode.replaceChild(img, clonedCanvas);
+                    }
+                    clonedDoc.querySelectorAll('.delete-btn, .resize-handle, .rotate-handle').forEach(el => el.style.display = 'none');
+                    clonedDoc.querySelectorAll('.editable-text').forEach(el => { el.contentEditable = 'false'; el.style.outline = 'none'; });
+                }
+            }).then((renderedCanvas) => {
+                hiddenEls.forEach(({ el, display }) => { el.style.display = display; });
+                const finalCanvas = document.createElement('canvas');
+                finalCanvas.width = A4_WIDTH; finalCanvas.height = A4_HEIGHT;
+                const fctx = finalCanvas.getContext('2d');
+                fctx.fillStyle = '#fffcf6';
+                fctx.fillRect(0, 0, A4_WIDTH, A4_HEIGHT);
+                const lineSpacing = 28 * (A4_WIDTH / inner.clientWidth);
+                fctx.strokeStyle = '#e8ddd0'; fctx.lineWidth = 2;
+                for (let y = lineSpacing; y < A4_HEIGHT; y += lineSpacing) {
+                    fctx.beginPath(); fctx.moveTo(0, y); fctx.lineTo(A4_WIDTH, y); fctx.stroke();
+                }
+                fctx.strokeStyle = '#e8d7c0'; fctx.lineWidth = 6;
+                fctx.beginPath(); fctx.moveTo(40, 0); fctx.lineTo(40, A4_HEIGHT); fctx.stroke();
+                const renderW = renderedCanvas.width, renderH = renderedCanvas.height;
+                const scale = Math.min(A4_WIDTH / renderW, A4_HEIGHT / renderH);
+                const drawW = renderW * scale, drawH = renderH * scale;
+                const offsetX = (A4_WIDTH - drawW) / 2, offsetY = (A4_HEIGHT - drawH) / 2;
+                fctx.imageSmoothingEnabled = true; fctx.imageSmoothingQuality = 'high';
+                fctx.drawImage(renderedCanvas, offsetX, offsetY, drawW, drawH);
+                const mime = format === 'jpg' ? 'image/jpeg' : 'image/png';
+                const quality = format === 'jpg' ? 0.95 : undefined;
+                const dataUrl = finalCanvas.toDataURL(mime, quality);
+                const link = document.createElement('a');
+                link.download = `sunday-morning-notebook-A4-HD.${format}`;
+                link.href = dataUrl;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }).catch((err) => {
+                console.error('Export failed:', err);
+                alert('Export failed. Please try again.');
+                hiddenEls.forEach(({ el, display }) => { el.style.display = display; });
+            });
+        }
+
+        // ================================================================
+        // 其他功能
+        // ================================================================
+        function addTextSticker() {
+            if (isSaved) return;
+            const maxZ = stickers.reduce((m, s) => Math.max(m, s.zIndex || 0), 0);
+            stickers.push({
+                type: 'text', content: 'Double-click to edit',
+                x: 120, y: 120, fontSize: 16, rotation: 0,
+                zIndex: maxZ + 1, fixed: false
+            });
+            renderNotebook();
+            saveHistory();
+        }
+        function clearNotebook() {
+            if (isSaved) return;
+            if (confirm('Clear all stickers and drawing from the notebook?')) {
+                stickers = [];
+                selectedStickerIndex = -1;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                renderNotebook();
+                document.getElementById('scaleControls').style.display = 'none';
+                saveHistory();
+            }
+        }
+        function backToSelection() {
+            setTool(null);
+            deselectSticker();
+            document.getElementById('notebookPage').classList.remove('active');
+            document.getElementById('sceneGrid').style.display = 'flex';
+            document.getElementById('finishToolbar').style.display = 'flex';
+        }
+        document.getElementById('stickerArea').addEventListener('pointerdown', (e) => {
+            if (e.target === document.getElementById('stickerArea') || e.target === document.getElementById('notebookPageInner')) deselectSticker();
+        });
+
+        // ================================================================
+        // 事件绑定
+        // ================================================================
+        document.getElementById('goToNotebookBtn').addEventListener('click', goToNotebook);
+        document.getElementById('openEditorBtn').addEventListener('click', requestAdminAccess);
+        document.getElementById('passwordSubmitBtn').addEventListener('click', verifyPassword);
+        document.getElementById('passwordCancelBtn').addEventListener('click', () => document.getElementById('passwordOverlay').classList.add('hidden'));
+        document.getElementById('passwordInput').addEventListener('keydown', (e) => { if (e.key === 'Enter') verifyPassword(); });
+        document.getElementById('closeAdminPanelBtn').addEventListener('click', closeAdminPanel);
+        document.getElementById('saveAdminBtn').addEventListener('click', saveAdminChanges);
+        document.getElementById('addTextBtn').addEventListener('click', addTextSticker);
+        document.getElementById('clearNotebookBtn').addEventListener('click', clearNotebook);
+        document.getElementById('backToSelectionBtn').addEventListener('click', backToSelection);
+        document.getElementById('exportPngBtn').addEventListener('click', () => exportNotebook('png'));
+        document.getElementById('exportJpgBtn').addEventListener('click', () => exportNotebook('jpg'));
+        document.getElementById('undoBtn').addEventListener('click', undo);
+        document.getElementById('redoBtn').addEventListener('click', redo);
+
+        document.getElementById('bgImageInput').addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            compressImageFile(file, (result) => {
+                customBg = result.data;
+                renderBgPreview();
+            });
+        });
+        document.getElementById('removeBgBtn').addEventListener('click', () => { customBg = ''; renderBgPreview(); });
+        document.getElementById('adminPanelOverlay').addEventListener('click', (e) => { if (e.target === e.currentTarget) closeAdminPanel(); });
+
+        // 初始化
+        renderScenes();
+        renderUserImagePanel();
+        applyCustomBg();
+        updateModeUI();
+    </script>
+</body>
+</html>
